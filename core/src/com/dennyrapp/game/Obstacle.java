@@ -13,7 +13,7 @@ public class Obstacle {
 	 */
 	CollisionBox cb_bottom, cb_top, cb_top2;
 	Sprite sprite_bottom, sprite_top,sprite_top2;
-	int gap, pos_x,posY;
+	int gap;
 	
 	
 	public Obstacle(Texture texture_bottom, double factor_bottom, Texture texture_top, double factor_top, int gap) {
@@ -52,8 +52,8 @@ public class Obstacle {
 	
 	private void updateCollisionBox() {
 		cb_bottom.setPos(sprite_bottom.getX(), sprite_bottom.getY());
-		cb_top.setPos(sprite_top.getX(), sprite_top.getY());
-		cb_top2.setPos(sprite_top2.getX(), sprite_top2.getY());
+		cb_top.setPos(sprite_bottom.getX(), sprite_top.getY());//bottom x wegen verschiebung
+		cb_top2.setPos(sprite_bottom.getX(), sprite_top2.getY());
 	}
 	
 	public boolean checkCollision(CollisionBox cb) {
@@ -64,6 +64,8 @@ public class Obstacle {
 		sprite_bottom.draw(batch);
 		sprite_top.draw(batch);
 		sprite_top2.draw(batch);
-		
+	}
+	public float getX() {
+		return sprite_bottom.getX();
 	}
 }

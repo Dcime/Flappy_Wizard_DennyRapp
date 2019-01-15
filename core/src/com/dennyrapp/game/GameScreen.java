@@ -19,21 +19,27 @@ public class GameScreen implements Screen {
 	
 	OrthographicCamera camera;
 	
-	Sprite sprite,tower_sprite1,tower_sprite2,tower_sprite3,tower_sprite4,dementor_sprite1;
+	Sprite sprite;
 	
-	static int tower_speed = -5;
+	static int tower_speed = -5;//-5
 	static int distance = 700;
 	static int start_x = 1150, start_y=-250;
-	static int gap = 20;
+	static int gap = 30;
 	static double tower_factor = 0.5;
 	static double dementor_factor = 0.125;
+	
+	//test________________________________________________
+	private int collisions = 0;
+	Sprite tests;
+	
+	//_____________________________________________________
 	
 	private int score;
 	private String score_string;
 	BitmapFont yourBitmapFontName;
 	
-	CollisionBox player,tower_cb1,tower_cb2,tower_cb3,tower_cb4;
-	Obstacle tower1,tower2,tower3;
+	CollisionBox player;
+	Obstacle tower1,tower2,tower3,tower4;
 	public GameScreen(FlappyGame game) {
 		this.game = game;
 		create_scoreboard();
@@ -44,42 +50,21 @@ public class GameScreen implements Screen {
 		int harry_height = (int)(game.harry.getHeight() * 0.125);
 		sprite.setSize(harry_width, harry_height);
 		player = new CollisionBox(sprite.getX(),sprite.getY(),harry_width,harry_height);
-		
-		tower_sprite1 = new Sprite(game.turm_gryffindor);
-		//int penis = Gdx.graphics.getWidth();
-		int tower_width1 = (int)(game.turm_gryffindor.getWidth() * 0.5);
-		int tower_height1 = (int)(game.turm_gryffindor.getHeight() * 0.5);
-		tower_sprite1.setSize(tower_width1, tower_height1);
-		tower_sprite1.setPosition(start_x, start_y);
-		tower_cb1 = new CollisionBox(tower_sprite1.getX(),tower_sprite1.getY(),tower_width1,tower_height1);
 
-		
-		tower_sprite2 = new Sprite(game.turm_huffelpuff);
-		tower_sprite2.setSize(tower_width1,tower_height1);
-		tower_sprite2.setPosition(tower_sprite1.getX()+distance, ThreadLocalRandom.current().nextInt(-600, -20-(int)sprite.getHeight() + 1));
-		tower_cb2 = new CollisionBox(tower_sprite2.getX(),tower_sprite2.getY(),tower_width1,tower_height1);
-		
-		tower_sprite3 = new Sprite(game.turm_ravenclaw);
-		tower_sprite3.setSize(tower_width1,tower_height1);
-		tower_sprite3.setPosition(tower_sprite2.getX()+distance, ThreadLocalRandom.current().nextInt(-600, -20-(int)sprite.getHeight() + 1));
-		tower_cb3 = new CollisionBox(tower_sprite3.getX(),tower_sprite3.getY(),tower_width1,tower_height1);
-		
-		tower_sprite4 = new Sprite(game.turm_slytherin);
-		tower_sprite4.setSize(tower_width1,tower_height1);
-		tower_sprite4.setPosition(tower_sprite3.getX()+distance, ThreadLocalRandom.current().nextInt(-600, -20-(int)sprite.getHeight() + 1));
-		tower_cb4 = new CollisionBox(tower_sprite4.getX(),tower_sprite4.getY(),tower_width1,tower_height1);
-		
-		dementor_sprite1= new Sprite(game.dementor);
-		int dementor_width = (int)(game.dementor.getWidth() * 0.125);
-		int dementor_height = (int)(game.dementor.getHeight() * 0.125);
-		dementor_sprite1.setSize(dementor_width, dementor_height);
-		dementor_sprite1.setPosition(tower_sprite1.getX(), tower_sprite1.getY()+tower_sprite1.getHeight()+sprite.getHeight()+2);
-		
 		tower1 = new Obstacle(game.turm_gryffindor,tower_factor,game.dementor,dementor_factor,(int)(gap+sprite.getHeight()));
-		tower1.setPos(start_x-100, start_y-50);
-		
-		
+		tower1.setPos(start_x, start_y);
+		tower2 = new Obstacle(game.turm_huffelpuff,tower_factor,game.dementor,dementor_factor,(int)(gap+sprite.getHeight()));
+		tower2.setPos((int)(tower1.getX()+distance), ThreadLocalRandom.current().nextInt(-600, -20-(int)sprite.getHeight() + 1));
+		tower3 = new Obstacle(game.turm_ravenclaw,tower_factor,game.dementor,dementor_factor,(int)(gap+sprite.getHeight()));
+		tower3.setPos((int)(tower2.getX()+distance), ThreadLocalRandom.current().nextInt(-600, -20-(int)sprite.getHeight() + 1));
+		tower4 = new Obstacle(game.turm_slytherin,tower_factor,game.dementor,dementor_factor,(int)(gap+sprite.getHeight()));
+		tower4.setPos((int)(tower3.getX()+distance), ThreadLocalRandom.current().nextInt(-600, -20-(int)sprite.getHeight() + 1));
 		camera = new OrthographicCamera();
+		
+		tests = new Sprite(game.item_blau);
+		tests.setSize((int)(game.item_blau.getWidth() * 0.075), (int)(game.item_blau.getHeight()*0.075));
+		
+		
 		camera.setToOrtho(false, 1280, 720);
 	}	
 	
@@ -104,29 +89,27 @@ public class GameScreen implements Screen {
 		player.setPos(sprite.getX(),sprite.getY());
 		//int randomNum = rand.nextInt((max - min) + 1) + min; max ist 0 min ist -600
 		
-		if(tower_sprite1.getX() < -10) {
-			tower_sprite1.setPosition(tower_sprite4.getX()+distance, ThreadLocalRandom.current().nextInt(-600, -20-(int)sprite.getHeight() + 1));
-			dementor_sprite1.setPosition(tower_sprite1.getX(), tower_sprite1.getY()+tower_sprite1.getHeight()+sprite.getHeight()+10);
+		if(tower1.getX() < -10) {
+			tower1.setPos((int)(tower4.getX()+distance), ThreadLocalRandom.current().nextInt(-600, -20-(int)sprite.getHeight() + 1));
 			count_score_up();
 		}
-		if(tower_sprite2.getX() < -10) {
-			tower_sprite2.setPosition(tower_sprite1.getX()+distance, ThreadLocalRandom.current().nextInt(-600, -20-(int)sprite.getHeight() + 1));
+		if(tower2.getX() < -10) {
+			tower2.setPos((int)(tower1.getX()+distance), ThreadLocalRandom.current().nextInt(-600, -20-(int)sprite.getHeight() + 1));
 			count_score_up();
 		}
-		if(tower_sprite3.getX() < -10) {
-			tower_sprite3.setPosition(tower_sprite2.getX()+distance, ThreadLocalRandom.current().nextInt(-600, -20-(int)sprite.getHeight() + 1));
+		if(tower3.getX() < -10) {
+			tower3.setPos((int)(tower2.getX()+distance), ThreadLocalRandom.current().nextInt(-600, -20-(int)sprite.getHeight() + 1));
 			count_score_up();
 		}
-		if(tower_sprite4.getX() < -10) {
-			tower_sprite4.setPosition(tower_sprite3.getX()+distance, ThreadLocalRandom.current().nextInt(-600, -20-(int)sprite.getHeight()  + 1)); //+1 fuer inklusiv
+		if(tower4.getX() < -10) {
+			tower4.setPos((int)(tower3.getX()+distance), ThreadLocalRandom.current().nextInt(-600, -20-(int)sprite.getHeight()  + 1)); //+1 fuer inklusiv
 			count_score_up();
 		}
-		tower_sprite1.translateX(tower_speed);
-		tower_sprite2.translateX(tower_speed);
-		tower_sprite3.translateX(tower_speed);
-		tower_sprite4.translateX(tower_speed);
-		dementor_sprite1.translateX(tower_speed);
-		tower1.translateX(tower_speed+2);
+
+		tower1.translateX(tower_speed);
+		tower2.translateX(tower_speed);
+		tower3.translateX(tower_speed);
+		tower4.translateX(tower_speed);
 		/*
 		int harry_width = (int)(game.harry.getWidth() * 0.125);
 		int harry_height = (int)(game.harry.getHeight() * 0.125);
@@ -136,28 +119,28 @@ public class GameScreen implements Screen {
 		yourBitmapFontName.draw(game.batch, score_string, 25, 100); 
 		
 		sprite.draw(game.batch);
-		tower_sprite1.draw(game.batch);
-		tower_sprite2.draw(game.batch);
-		tower_sprite3.draw(game.batch);
-		tower_sprite4.draw(game.batch);
-		dementor_sprite1.draw(game.batch);
+
 		
 		tower1.draw(game.batch);
-		/*
-		game.batch.draw(game.harry
-				, camera.viewportWidth / 2 - harry_width / 2
-				, camera.viewportHeight / 2 - harry_height / 2
-				, harry_width
-				, harry_height
-			);
-			*/
-		tower_cb1.setPos(tower_sprite1.getX(), tower_sprite1.getY());
-		tower_cb2.setPos(tower_sprite2.getX(), tower_sprite2.getY());
-		tower_cb3.setPos(tower_sprite3.getX(), tower_sprite3.getY());
-		tower_cb4.setPos(tower_sprite4.getX(), tower_sprite4.getY());
-		if(player.checkCollision(tower_cb1)||player.checkCollision(tower_cb2)||player.checkCollision(tower_cb3)||player.checkCollision(tower_cb4)) {
+		tower2.draw(game.batch);
+		tower3.draw(game.batch);
+		tower4.draw(game.batch);
+		
+		tests.setPosition(tower1.cb_bottom.x, tower1.cb_bottom.y);
+		tests.draw(game.batch);
+		tests.setPosition(tower1.cb_bottom.x + tower1.cb_bottom.width, tower1.cb_bottom.y);
+		tests.draw(game.batch);
+		tests.setPosition(tower1.cb_bottom.x + tower1.cb_bottom.width, tower1.cb_bottom.y+tower1.cb_bottom.height);
+		tests.draw(game.batch);
+		tests.setPosition(tower1.cb_bottom.x, tower1.cb_bottom.y+tower1.cb_bottom.height);
+		tests.draw(game.batch);
+
+		if(tower1.checkCollision(player)||tower2.checkCollision(player)||tower3.checkCollision(player)||tower4.checkCollision(player)) {
 			System.out.println("COLLISION");
+			collisions ++;
+			//String feck = "collision "+collisions;
 		}
+		yourBitmapFontName.draw(game.batch, "collision "+collisions, 25, 500); 
 		//System.out.println(tower_sprite4.getX());
 		game.batch.end();
 		

@@ -6,6 +6,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
@@ -23,12 +24,16 @@ public class GameScreen implements Screen {
 	static int tower_speed = -5;
 	static int distance = 700;
 	static int start_x = 1150, start_y=-250;
+	static int gap = 20;
+	static double tower_factor = 0.5;
+	static double dementor_factor = 0.125;
 	
 	private int score;
 	private String score_string;
 	BitmapFont yourBitmapFontName;
 	
 	CollisionBox player,tower_cb1,tower_cb2,tower_cb3,tower_cb4;
+	Obstacle tower1,tower2,tower3;
 	public GameScreen(FlappyGame game) {
 		this.game = game;
 		create_scoreboard();
@@ -39,7 +44,6 @@ public class GameScreen implements Screen {
 		int harry_height = (int)(game.harry.getHeight() * 0.125);
 		sprite.setSize(harry_width, harry_height);
 		player = new CollisionBox(sprite.getX(),sprite.getY(),harry_width,harry_height);
-		
 		
 		tower_sprite1 = new Sprite(game.turm_gryffindor);
 		//int penis = Gdx.graphics.getWidth();
@@ -69,7 +73,11 @@ public class GameScreen implements Screen {
 		int dementor_width = (int)(game.dementor.getWidth() * 0.125);
 		int dementor_height = (int)(game.dementor.getHeight() * 0.125);
 		dementor_sprite1.setSize(dementor_width, dementor_height);
-		dementor_sprite1.setPosition(tower_sprite1.getX(), tower_sprite1.getY()+tower_sprite1.getHeight()+sprite.getHeight()+20);
+		dementor_sprite1.setPosition(tower_sprite1.getX(), tower_sprite1.getY()+tower_sprite1.getHeight()+sprite.getHeight()+2);
+		
+		tower1 = new Obstacle(game.turm_gryffindor,tower_factor,game.dementor,dementor_factor,(int)(gap+sprite.getHeight()));
+		tower1.setPos(start_x-100, start_y-50);
+		
 		
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 1280, 720);
@@ -118,6 +126,7 @@ public class GameScreen implements Screen {
 		tower_sprite3.translateX(tower_speed);
 		tower_sprite4.translateX(tower_speed);
 		dementor_sprite1.translateX(tower_speed);
+		tower1.translateX(tower_speed+2);
 		/*
 		int harry_width = (int)(game.harry.getWidth() * 0.125);
 		int harry_height = (int)(game.harry.getHeight() * 0.125);
@@ -132,6 +141,8 @@ public class GameScreen implements Screen {
 		tower_sprite3.draw(game.batch);
 		tower_sprite4.draw(game.batch);
 		dementor_sprite1.draw(game.batch);
+		
+		tower1.draw(game.batch);
 		/*
 		game.batch.draw(game.harry
 				, camera.viewportWidth / 2 - harry_width / 2

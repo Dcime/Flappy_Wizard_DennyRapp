@@ -21,7 +21,7 @@ public class GameScreen implements Screen {
 	Sprite sprite,tower_sprite1,tower_sprite2,tower_sprite3,tower_sprite4,dementor_sprite1;
 	
 	static int tower_speed = -5;
-	static int distance = 400;
+	static int distance = 700;
 	static int start_x = 1150, start_y=-250;
 	
 	private int score;
@@ -69,7 +69,7 @@ public class GameScreen implements Screen {
 		int dementor_width = (int)(game.dementor.getWidth() * 0.125);
 		int dementor_height = (int)(game.dementor.getHeight() * 0.125);
 		dementor_sprite1.setSize(dementor_width, dementor_height);
-		dementor_sprite1.setPosition(tower_sprite1.getX(), tower_sprite1.getY()+tower_sprite1.getHeight()+sprite.getHeight()+10);
+		dementor_sprite1.setPosition(tower_sprite1.getX(), tower_sprite1.getY()+tower_sprite1.getHeight()+sprite.getHeight()+20);
 		
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 1280, 720);

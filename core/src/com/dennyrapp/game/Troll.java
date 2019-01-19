@@ -2,13 +2,15 @@ package com.dennyrapp.game;
 
 import com.badlogic.gdx.graphics.Texture;
 
-public class Invnincible extends Items{
+public class Troll extends Items {
 
-	public Invnincible(Texture texture, double factor) {
+	public Troll(Texture texture, double factor) {
 		super(texture, factor);
+		// TODO Auto-generated constructor stub
 	}
 	@Override
 	public void effect() {
 		
 	}
+
 }

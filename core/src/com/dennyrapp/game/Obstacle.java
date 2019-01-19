@@ -56,7 +56,7 @@ public class Obstacle {
 	public void translateX(int x) {
 		sprite_bottom.translateX(x);
 		sprite_top.translateX(x);
-		sprite_top2.translateX(x);
+		sprite_top2.translateX(x); 
 		updateCollisionBox();
 	}
 	//Die Kollisionsboxen werden gesetzt

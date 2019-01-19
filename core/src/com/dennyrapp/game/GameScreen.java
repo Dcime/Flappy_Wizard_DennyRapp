@@ -35,11 +35,13 @@ public class GameScreen implements Screen {
 	BitmapFont yourBitmapFontName;
 	CollisionBox player;
 	Obstacle tower1,tower2,tower3,tower4;
+	Troll trollItem;
+	DoubleScore doubleScoreItem;
+	Invnincible invincibleItem;
 	//Ende Klassenvariablen_________________
 	//--------------------------------------
 	//test__________________________________
 	private int collisions = 0;
-	Sprite tests;
 	//Ende Test_____________________________
 	//--------------------------------------
 	//Konstruktor___________________________
@@ -70,11 +72,7 @@ public class GameScreen implements Screen {
 		//---------------------------------------------------------------------------------
 		
 		camera = new OrthographicCamera();
-		//TEST SHIT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		tests = new Sprite(game.item_blau);
-		tests.setSize((int)(game.item_blau.getWidth() * 0.075), (int)(game.item_blau.getHeight()*0.075));
-		//ENDE TEST SHIT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		
+
 		camera.setToOrtho(false, 1280, 720);
 	}	
 	//Ende Konstruktor_______________________________________________________________________
@@ -131,6 +129,7 @@ public class GameScreen implements Screen {
 		if(tower1.checkCollision(player)||tower2.checkCollision(player)||tower3.checkCollision(player)||tower4.checkCollision(player)) {
 			System.out.println("COLLISION");
 			collisions ++;
+			//gameOver();
 		}
 		//Ende Kollisionscheck__________________________
 		//----------------------------------------------
@@ -143,7 +142,6 @@ public class GameScreen implements Screen {
 		//----------------------------------------------
 		//Test Kollision score!!!!!!!!!!!!!!!!!!!!!!!!!!
 		yourBitmapFontName.draw(game.batch, "collision "+collisions, 25, 500);
-		game.batch.end();
 		//Ende Test!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		//----------------------------------------------
 		//Zeichnen des Spielers und der Obstacles_______
@@ -154,18 +152,10 @@ public class GameScreen implements Screen {
 		tower4.draw(game.batch);
 		//Ende Zeichnen des Spielers und der Obstacles_________________________________________________
 		//----------------------------------------------------------------------------------------------
-		//Test shit!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		tests.setPosition(tower1.cb_bottom.x, tower1.cb_bottom.y);
-		tests.draw(game.batch);
-		tests.setPosition(tower1.cb_bottom.x + tower1.cb_bottom.width, tower1.cb_bottom.y);
-		tests.draw(game.batch);
-		tests.setPosition(tower1.cb_bottom.x + tower1.cb_bottom.width, tower1.cb_bottom.y+tower1.cb_bottom.height);
-		tests.draw(game.batch);
-		tests.setPosition(tower1.cb_bottom.x, tower1.cb_bottom.y+tower1.cb_bottom.height);
-		tests.draw(game.batch);
-		//Test shit!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 		//------------------------------------------------------------------------
 		//Ende des Zeichnens_______________________________________________________
+		game.batch.end();
 	}
 	//Ende Rendern_____________________________________________________________________________
 	//-----------------------------------------------------------------------------------------
@@ -210,4 +200,11 @@ public class GameScreen implements Screen {
 		score++;
 		score_string = "score: " + score;
 	}    
+	public void gameOver() {
+		game.setScreen(new GameOverScreen(game,String.valueOf(score)));
+		dispose();
+	}
+	public void placeItems() {
+		
+	}
 }

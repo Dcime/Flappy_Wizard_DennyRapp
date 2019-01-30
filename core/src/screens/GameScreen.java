@@ -282,19 +282,19 @@ public class GameScreen implements Screen {
 	}
 	public void tower_loop() {
 		if(tower1.getX() < 0-tower1.getWidth()) {
-			tower1.setPos((int)(tower4.getX()+distance), ThreadLocalRandom.current().nextInt(-600, -20-(int)player.getHeight() + 1));
+			tower1.setPos((int)(tower4.getX()+distance), ThreadLocalRandom.current().nextInt(-600, -20-(int)player.getHeight() + 5));
 			score.incrementScore(score_factor);
 		}
 		if(tower2.getX() < 0-tower1.getWidth()) {
-			tower2.setPos((int)(tower1.getX()+distance), ThreadLocalRandom.current().nextInt(-600, -20-(int)player.getHeight() + 1));
+			tower2.setPos((int)(tower1.getX()+distance), ThreadLocalRandom.current().nextInt(-600, -20-(int)player.getHeight() + 5));
 			score.incrementScore(score_factor);
 		}
 		if(tower3.getX() < 0-tower1.getWidth()) {
-			tower3.setPos((int)(tower2.getX()+distance), ThreadLocalRandom.current().nextInt(-600, -20-(int)player.getHeight() + 1));
+			tower3.setPos((int)(tower2.getX()+distance), ThreadLocalRandom.current().nextInt(-600, -20-(int)player.getHeight() + 5));
 			score.incrementScore(score_factor);
 		}
 		if(tower4.getX() < 0-tower1.getWidth()) {
-			tower4.setPos((int)(tower3.getX()+distance), ThreadLocalRandom.current().nextInt(-600, -20-(int)player.getHeight()  + 1)); //+1 fuer inklusiv
+			tower4.setPos((int)(tower3.getX()+distance), ThreadLocalRandom.current().nextInt(-600, -20-(int)player.getHeight()  + 5)); //+1 fuer inklusiv
 			score.incrementScore(score_factor);
 		}
 	}

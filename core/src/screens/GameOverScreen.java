@@ -63,7 +63,7 @@ public class GameOverScreen implements Screen{
 		    @Override
 		    public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
 		    	game.setScreen(new GameScreen(game));
-				dispose();
+				//dispose();
 		    }
 		    @Override
 		    public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
@@ -72,8 +72,10 @@ public class GameOverScreen implements Screen{
 		    }
 		});
 		stage.addActor(button);
-		/*
-		TextField name_textField = new TextField("Namen eingeben", mySkin,"small");
+		TextField.TextFieldStyle textFieldStyle = mySkin.get(TextField.TextFieldStyle.class);
+		//textFieldStyle.font.scale(1.6f);
+
+		TextField name_textField = new TextField("Fick dich",textFieldStyle);
 		name_textField.setSize(col_width*4,row_height);
 		name_textField.setPosition(col_width*7,Gdx.graphics.getHeight()-row_height*3-spacing);
 		name_textField.addListener(new InputListener(){
@@ -89,7 +91,6 @@ public class GameOverScreen implements Screen{
 		    }
 		});
 		stage.addActor(name_textField);
-		*/
 	}
 	
 	

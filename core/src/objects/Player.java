@@ -36,6 +36,7 @@ public class Player extends Actor{
 	}
 	//Fall nach unten
 	public void fall() {
+		
 		player_Sprite.translateY(fallingSpeed);
 		cb.translateY(fallingSpeed);
 	}

@@ -1,4 +1,4 @@
-package com.dennyrapp.game;
+package objects;
 
 import com.badlogic.gdx.graphics.Texture;
 

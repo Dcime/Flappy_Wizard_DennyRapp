@@ -1,8 +1,10 @@
-package com.dennyrapp.game;
+package objects;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+
+import helper.CollisionBox;
 
 public class Obstacle {
 	/**
@@ -47,6 +49,11 @@ public class Obstacle {
 		//Die Kollisionsbox wird nachgezogen
 		updateCollisionBox();
 	}
+	//setzt die y position
+	public void setY(int y) {
+		sprite_bottom.setY(y);
+		setRelativePos();
+	}
 	//die Position der anderen Sprites werden gesetzt
 	private void setRelativePos() {
 		sprite_top.setPosition(sprite_bottom.getX()-sprite_bottom.getWidth()/2, sprite_bottom.getY()+gap+sprite_bottom.getHeight());
@@ -78,5 +85,14 @@ public class Obstacle {
 	//Die X-Position von dem Objekt wird zurueck gegeben
 	public float getX() {
 		return sprite_bottom.getX();
+	}
+	public float getHeigth() {
+		return sprite_bottom.getHeight()+sprite_top.getHeight()+sprite_top2.getHeight()+gap;
+	}
+	public float getWidth() {
+		return sprite_bottom.getWidth();
+	}
+	public float getBottomHeigth() {
+		return sprite_bottom.getHeight();
 	}
 }

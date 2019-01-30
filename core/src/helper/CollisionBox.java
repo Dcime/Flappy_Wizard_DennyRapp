@@ -1,4 +1,4 @@
-package com.dennyrapp.game;
+package helper;
 /**
  * 
  * @author Denny Rapp
@@ -29,5 +29,12 @@ public class CollisionBox {
 	//Checkt ob 2 Rechtecke ueberlappen
 	public boolean checkCollision(CollisionBox cb) {
 		return this.x < cb.x + cb.width && this.y < cb.y + cb.height && this.x + this.width > cb.x && this.y + this.height > cb.y;
+	}
+	
+	public void translateX(float x) {
+		this.x = this.x+x;
+	}
+	public void translateY(float y) {
+		this.y = this.y+y;
 	}
 }

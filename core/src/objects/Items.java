@@ -1,8 +1,10 @@
-package com.dennyrapp.game;
+package objects;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+
+import helper.CollisionBox;
 
 public class Items {
 	Sprite item_sprite;
@@ -29,6 +31,18 @@ public class Items {
 	}
 	public boolean collision(CollisionBox cb) {
 		return this.cb.checkCollision(cb);
+	}
+	public float getWidth() {
+		return item_sprite.getWidth();
+	}
+	public float getHeight() {
+		return item_sprite.getHeight();
+	}
+	public float getX() {
+		return item_sprite.getX();
+	}
+	public CollisionBox getCb() {
+		return cb;
 	}
 
 }

@@ -30,10 +30,11 @@ public class CollisionBox {
 	public boolean checkCollision(CollisionBox cb) {
 		return this.x < cb.x + cb.width && this.y < cb.y + cb.height && this.x + this.width > cb.x && this.y + this.height > cb.y;
 	}
-	
+	//verschieben auf der x-Achse
 	public void translateX(float x) {
 		this.x = this.x+x;
 	}
+	//verschieben auf der y-Achse
 	public void translateY(float y) {
 		this.y = this.y+y;
 	}

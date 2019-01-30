@@ -21,10 +21,16 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.dennyrapp.game.FlappyGame;
 
 import helper.Scoreboard;
-
+/*
+ * Screen der beim Game Over aufgerufen wird.
+ * Hier wird der Highscore angezeigt und
+ * ggf. ein neuer gesetzt.
+ * Ausserdem kann man von hier ein neues Spiel
+ * starten oder zum Hauptmenue zurueck.
+ */
 public class GameOverScreen implements Screen{
 	
-	
+	//Magic ab hier
 	private FlappyGame game;
 	Scoreboard scoreboard;
 	private Stage stage;

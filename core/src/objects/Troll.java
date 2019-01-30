@@ -8,9 +8,4 @@ public class Troll extends Items {
 		super(texture, factor);
 		// TODO Auto-generated constructor stub
 	}
-	@Override
-	public void effect() {
-		
-	}
-
 }

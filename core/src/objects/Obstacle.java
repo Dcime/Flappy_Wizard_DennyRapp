@@ -86,12 +86,15 @@ public class Obstacle {
 	public float getX() {
 		return sprite_bottom.getX();
 	}
+	//gibt die gesamt Hoehe zurueck
 	public float getHeigth() {
 		return sprite_bottom.getHeight()+sprite_top.getHeight()+sprite_top2.getHeight()+gap;
 	}
+	//gibt die Breite zurueck
 	public float getWidth() {
 		return sprite_bottom.getWidth();
 	}
+	//gibt die Hoehe des unteren Teils bis zur Luecke zurueck
 	public float getBottomHeigth() {
 		return sprite_bottom.getHeight();
 	}

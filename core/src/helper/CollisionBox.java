@@ -38,4 +38,7 @@ public class CollisionBox {
 	public void translateY(float y) {
 		this.y = this.y+y;
 	}
+	public void setY(float y) {
+		this.y = y;
+	}
 }

@@ -32,8 +32,12 @@ public class Player extends Actor{
 	}
 	//Bewegung nach oben
 	public void fly() {
-		player_Sprite.translateY(flyingSpeed);
-		cb.translateY(flyingSpeed);
+		if(player_Sprite.getY()+flyingSpeed > 550) {
+			player_Sprite.setY(550);
+		}else {
+			player_Sprite.translateY(flyingSpeed);
+		}
+		cb.setY(player_Sprite.getY());
 		fallingSpeed = 1;
 	}
 	//Fall nach unten

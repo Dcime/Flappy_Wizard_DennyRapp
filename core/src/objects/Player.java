@@ -14,8 +14,9 @@ public class Player extends Actor{
 	CollisionBox cb;		//Kollisionsbox
 	Sprite player_Sprite;	//Aussehen
 	int flyingSpeed;		//wie schnell die Figur nach oben fliegt
-	int fallingSpeed = -2;	//wird spaeter durch gravitation und gewicht ersetzt
+	double fallingSpeed = 1;	//wird spaeter durch gravitation und gewicht ersetzt
 	Item_Status status;		//Status des Spielers (ENUM)
+	final double g = 9.81;
 	//Konstruktor
 	public Player(Texture texture,double factor, int flyingSpeed) {
 		player_Sprite = new Sprite(texture); 
@@ -33,12 +34,16 @@ public class Player extends Actor{
 	public void fly() {
 		player_Sprite.translateY(flyingSpeed);
 		cb.translateY(flyingSpeed);
+		fallingSpeed = 1;
 	}
 	//Fall nach unten
-	public void fall() {
-		
-		player_Sprite.translateY(fallingSpeed);
-		cb.translateY(fallingSpeed);
+	public void fall(float delta) {
+		//v = g*t
+		if(fallingSpeed < 60) {
+			fallingSpeed += g* delta;
+		}
+		player_Sprite.translateY(-(int)fallingSpeed);
+		cb.translateY(-(int)fallingSpeed);
 	}
 	//Kollisionscheck
 	public boolean checkCollision(CollisionBox cb) {

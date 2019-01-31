@@ -16,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldListener;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.dennyrapp.game.FlappyGame;
@@ -37,19 +38,21 @@ public class GameOverScreen implements Screen{
 	BitmapFont pixelFont;
 	GlyphLayout pixelLayout;
 	OrthographicCamera camera;
-	float posx, posy;
-	final int spacing = 10;
+	float posx = 1280/2; 
+	float posy = 720;
+	final int spacing = 80;
+	String score_name = "None";
 	
-	public GameOverScreen(FlappyGame game1, Scoreboard scoreboard) {
+	public GameOverScreen(FlappyGame game1, Scoreboard scoreboard1) {
 		this.game = game1;
-		this.scoreboard = scoreboard;
+		this.scoreboard = scoreboard1;
 		stage = new Stage(new ScreenViewport());
 		Gdx.input.setInputProcessor(stage);
 		pixelFont = new BitmapFont(Gdx.files.internal("fonts/score.fnt"));
 	    pixelFont.getData().setScale(0.5f);
 	    pixelLayout = new GlyphLayout(pixelFont,"Your score is: "+ scoreboard.getScore());
-	    posx = Gdx.graphics.getWidth()/2-pixelLayout.width/2;
-		posy = Gdx.graphics.getHeight()-pixelLayout.height-10;
+	    posx -=pixelLayout.width/2;
+		posy -=(pixelLayout.height+10);
 	    camera = new OrthographicCamera();
 		camera.setToOrtho(false, 1280, 720);
 		
@@ -62,6 +65,11 @@ public class GameOverScreen implements Screen{
 		button.addListener(new InputListener(){
 		    @Override
 		    public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
+		    	if(scoreboard.setHighscore(scoreboard.getScore(), score_name)) {
+		    		System.out.println("new score");
+		    	}else {
+		    		System.out.println("no new score");
+		    	}
 		    	game.setScreen(new GameScreen(game));
 				//dispose();
 		    }
@@ -74,15 +82,31 @@ public class GameOverScreen implements Screen{
 		stage.addActor(button);
 		TextField.TextFieldStyle textFieldStyle = mySkin.get(TextField.TextFieldStyle.class);
 		//textFieldStyle.font.scale(1.6f);
-
-		TextField name_textField = new TextField("Fick dich",textFieldStyle);
+		TextField name_textField = new TextField("Name",textFieldStyle);
 		name_textField.setSize(col_width*4,row_height);
-		name_textField.setPosition(col_width*7,Gdx.graphics.getHeight()-row_height*3-spacing);
-		name_textField.addListener(new InputListener(){
+		name_textField.setPosition(col_width*7,Gdx.graphics.getHeight()-row_height*3-spacing-name_textField.getHeight()/2);
+		name_textField.setTextFieldListener(new TextFieldListener() {
+
+            @Override
+            public void keyTyped(TextField textField, char key) {
+                    score_name= textField.getText();
+            }
+        });
+		//String st = name_textField.getText();
+		stage.addActor(name_textField);
+		Button button2 = new TextButton("Zum Menue",mySkin,"small");
+		button2.setSize(col_width*4,row_height);
+		button2.setPosition(col_width*7,name_textField.getY()-spacing-button2.getHeight()/2);
+		button2.addListener(new InputListener(){
 		    @Override
 		    public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
-		    	game.setScreen(new GameScreen(game));
-				dispose();
+		    	if(scoreboard.setHighscore(scoreboard.getScore(), score_name)) {
+		    		System.out.println("new score");
+		    	}else {
+		    		System.out.println("no new score");
+		    	}
+		    	game.setScreen(new MainMenuScreen(game));
+				//dispose();
 		    }
 		    @Override
 		    public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
@@ -90,88 +114,10 @@ public class GameOverScreen implements Screen{
 		        return true;
 		    }
 		});
-		stage.addActor(name_textField);
+		stage.addActor(button2);
 	}
 	
-	
-	/*	
-	private FlappyGame game;
-	private Stage stage;
-	
-	private  TextButton submit;
-	private TextButtonStyle tbStyle;
-	private BitmapFont font;
-	private Label textlabel1,textlabel2;
 
-	OrthographicCamera camera;
-	
-	public GameOverScreen(FlappyGame game, String score) {
-		this.game = game;
-		
-		stage = new Stage(new ScreenViewport());
-		Gdx.input.setInputProcessor(stage);
-		
-		Skin mySkin = new Skin(Gdx.files.internal("skin/glassy-ui.json"));
-		
-		
-		//Button button2 = new TextButton("Text Button",mySkin,"small");
-		//button2.setSize(col_width*4,row_height);
-		//button2.setPosition(col_width*7,Gdx.graphics.getHeight()-row_height*3);
-		//button2.addListener(new InputListener(){
-    	//@Override
-    	//public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
-        //outputLabel.setText("Press a Button");
-    //}
-    //@Override
-    //public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-      //  outputLabel.setText("Pressed Text Button");
-        //return true;
-    //}
-//});
-//stage.addActor(button2);
-		
-		
-		
-		Table rootTable = new Table();
-		rootTable.setFillParent(true);
-		rootTable.center().center();
-		
-		
-		
-		font = new BitmapFont();
-		tbStyle = new TextButtonStyle();
-		tbStyle.font = font;
-		Skin uiSkin = new Skin(Gdx.files.internal("skin/glassy-ui.json"));
-		submit = new TextButton("Submit",tbStyle);
-		textlabel1 = new Label("Game Over",uiSkin);
-		textlabel2 = new Label(score,uiSkin);
-		
-		rootTable.add(textlabel1);
-		rootTable.row();
-		rootTable.add(textlabel2);
-		rootTable.row();
-		rootTable.add(submit);
-		
-		stage.addActor(rootTable);
-		
-		camera = new OrthographicCamera();
-		camera.setToOrtho(false, 1280, 720);	
-	}
-
-	@Override
-	public void show() {
-
-		
-	}
-
-	@Override
-	public void render(float delta) {
-	    Gdx.gl.glClearColor(1, 1, 1, 1);
-	    Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-	    stage.act();
-	    stage.draw();
-	}
-	*/
 	@Override
 	public void resize(int width, int height) {
 		// TODO Auto-generated method stub
@@ -227,7 +173,21 @@ public class GameOverScreen implements Screen{
 		
 		stage.act();
         stage.draw();
-		
 	}
 
 }
+/*
+private String txtVal;
+
+TextField textField= new TextField("textField Vallue", skin);
+
+        textField.setTextFieldListener(new TextFieldListener() {
+
+            @Override
+            public void keyTyped(TextField textField, char key) {
+                    txtVal= textField.getText();
+            }
+        });
+
+ System.out.println(txtVal);
+*/

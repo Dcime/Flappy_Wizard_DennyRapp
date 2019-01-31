@@ -42,7 +42,7 @@ public class GameScreen implements Screen {
 	static double dementor_factor = 0.125;
 	static double items_factor = 0.075;
 	static double player_factor = 0.125;
-	static int flap_factor = 5;
+	static int flap_factor = 50;
 	static float item_timer = 0;
 	static float item_duration = 5;
 	private int score_factor = 1;
@@ -98,13 +98,16 @@ public class GameScreen implements Screen {
 		Gdx.gl.glClearColor(0, 0.5f, 0.5f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		collisions = false;
-		if(Gdx.input.isKeyPressed(Input.Keys.SPACE)&& (player.getStatus() != Item_Status.turbo)) {//check ob Taste gedrueckt
-			if(player.getY()<= 550) {//check ob max hoehe
-				player.fly();//fliegen
-			}
-		}else if(player.getY() > 0 && player.getStatus() != Item_Status.turbo){//check ob am Boden
-				player.fall();//fallen
-		}	
+		if(player.getStatus() != Item_Status.turbo) {
+			if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {//check ob Taste gedrueckt
+				if(player.getY()<= 550) {//check ob max hoehe
+					player.fly();//fliegen
+				}
+			} 
+			if(player.getY() > 0){//check ob am Boden
+					player.fall(delta);//fallen
+			}	
+		}
 		if(player.getStatus() == Item_Status.notActive) {
 			item_timer = 0;
 		}
@@ -219,7 +222,7 @@ public class GameScreen implements Screen {
 		// TODO Auto-generated method stub
 	} 
 	public void gameOver() {
-		game.setScreen(new GameOverScreen(game,score));
+		//game.setScreen(new GameOverScreen(game,score));
 		//dispose();
 	}
 	public void placeItemsCollision(Items i) {

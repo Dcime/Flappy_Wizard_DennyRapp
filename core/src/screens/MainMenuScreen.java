@@ -24,7 +24,8 @@ public class MainMenuScreen implements Screen {
 	OrthographicCamera camera;
 	final int spacing = 10;
 	BitmapFont pixelFont;
-	float posx, posy;
+	float posx = 1280/2; 
+	float posy = 720;
 	GlyphLayout pixelLayout;
 	
 	public MainMenuScreen(FlappyGame game1) {
@@ -77,8 +78,7 @@ public class MainMenuScreen implements Screen {
 		button3.addListener(new InputListener(){
 		    @Override
 		    public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
-		    	game.setScreen(new GameScreen(game));
-				dispose();
+		    	game.setScreen(new HelpScreen(game));
 		    }
 		    @Override
 		    public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
@@ -90,8 +90,8 @@ public class MainMenuScreen implements Screen {
 		
 		
 		pixelLayout = new GlyphLayout(pixelFont,"Welcome to Flappy Wizard!!!");
-		posx = Gdx.graphics.getWidth()/2-pixelLayout.width/2;
-		posy = Gdx.graphics.getHeight()-pixelLayout.height-10;
+        posx -= pixelLayout.width/2;
+        posy -= (pixelLayout.height +10);
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 1280, 720);	
 	}
@@ -110,24 +110,10 @@ public class MainMenuScreen implements Screen {
 		game.batch.begin();
 		game.batch.draw(game.hermine, 0, 0, (int)(game.hermine.getWidth() * 0.25), (int)(game.hermine.getHeight() * 0.25));
 		pixelFont.draw(game.batch,pixelLayout,posx,posy);
-		//yourBitmapFontName.setColor(1.0f, 1.0f, 1.0f, 1.0f);
-		//yourBitmapFontName.getData().setScale(3);
-		//yourBitmapFontName.draw(game.batch, "Welcome to Flappy Wizard!!! ", camera.viewportWidth / 3, camera.viewportHeight - 100); 
-		//game.font.draw(game.batch, "Welcome to Flappy Wizard!!! ", camera.viewportWidth / 3, camera.viewportHeight - 100);
 		game.batch.end();
 		
 		stage.act();
         stage.draw();
-
-        /*
-		if (Gdx.input.isTouched()) {
-			game.setScreen(new GameScreen(game));
-			dispose();
-		}
-		*/
-        
-        //gdx.graphics.getheigth()
-		
 	}
 	
 	@Override

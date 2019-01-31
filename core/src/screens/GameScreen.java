@@ -43,7 +43,6 @@ public class GameScreen implements Screen {
 	private static float item_duration = 5;
 	private int score_factor = 1;
 	private BitmapFont yourBitmapFontName;
-	private Obstacle tower1,tower2,tower3,tower4;
 	private Items trollItem, doubleScoreItem, invincibleItem, turboItem;
 	private Player player;
 	private Scoreboard score;
@@ -148,9 +147,6 @@ public class GameScreen implements Screen {
 			update_check_collision();
 			break;
 		}
-		
-		 
-		
 		game.batch.begin();
 		if(collisions) {
 			yourBitmapFontName.setColor(Color.RED);
@@ -242,52 +238,10 @@ public class GameScreen implements Screen {
 					gameOver();
 				}
 			}
-			if(arr_it[i].checkCollision(player.getCb())) {
+			if(player.getStatus() == Item_Status.notActive && arr_it[i].checkCollision(player.getCb())) {
 				player.setStatus(arr_it[i].getKind());
 			}
 		}
-		
-		
-		
-		
-		/*
-		for(int i = 1;i<arr.length;i++) {
-			if(arr[i] instanceof Obstacle) {
-				Obstacle obst = (Obstacle) arr[i];
-				if(obst.checkCollision(player.getCb())) {
-					if(player.getStatus() == Item_Status.invincible && helper == null) {
-						helper = (Obstacle) arr[i];
-						player.setStatus(Item_Status.notActive);
-					}else {
-						if(obst != helper) {
-							System.out.println("COLLISION");
-							collisions = true;
-							helper = null;
-							gameOver();
-						}
-					}
-				}
-			}
-			if(player.getStatus() == Item_Status.notActive) {
-				if(arr[i] instanceof Items) {
-					Items it = (Items) arr[i];
-					if(it.collision(player.getCb())) {
-						if(arr[i] instanceof Turbo) {
-							player.setStatus(Item_Status.turbo);
-						}else if(arr[i] instanceof Troll) {
-							player.setStatus(Item_Status.troll);
-						}else if(arr[i] instanceof DoubleScore) {
-							player.setStatus(Item_Status.doubleScore);
-						}else if(arr[i] instanceof Invincible) {
-							player.setStatus(Item_Status.invincible);
-						}
-						placeItems(it);
-					}
-				}
-			}
-			
-		}
-		*/
 	}
 	public void translate_objects(int translate_factor) {
 		if(arr_obst.length != arr_it.length) {
@@ -297,18 +251,6 @@ public class GameScreen implements Screen {
 			arr_obst[i].translateX(tower_speed* translate_factor);
 			arr_it[i].translateX(tower_speed*translate_factor);
 		}
-		/*
-		for(int i = 1; i<arr.length;i++) {
-			if(arr[i] instanceof Obstacle) {
-				Obstacle obst = (Obstacle) arr[i];
-				obst.translateX(tower_speed * translate_facor);
-			}
-			if(arr[i] instanceof Items) {
-				Items it = (Items) arr[i];
-				it.translateX(tower_speed * translate_facor);
-			}
-		}
-		*/
 	}
 	public void tower_loop() {
 		for(int i = 0;i<arr_obst.length;i++) {
@@ -324,24 +266,6 @@ public class GameScreen implements Screen {
 				}
 			}
 		}
-		/*
-		if(tower1.getX() < 0-tower1.getWidth()) {
-			tower1.setPos((int)(tower4.getX()+distance), ThreadLocalRandom.current().nextInt(-600, -20-(int)player.getHeight() + 5));
-			score.incrementScore(score_factor);
-		}
-		if(tower2.getX() < 0-tower1.getWidth()) {
-			tower2.setPos((int)(tower1.getX()+distance), ThreadLocalRandom.current().nextInt(-600, -20-(int)player.getHeight() + 5));
-			score.incrementScore(score_factor);
-		}
-		if(tower3.getX() < 0-tower1.getWidth()) {
-			tower3.setPos((int)(tower2.getX()+distance), ThreadLocalRandom.current().nextInt(-600, -20-(int)player.getHeight() + 5));
-			score.incrementScore(score_factor);
-		}
-		if(tower4.getX() < 0-tower1.getWidth()) {
-			tower4.setPos((int)(tower3.getX()+distance), ThreadLocalRandom.current().nextInt(-600, -20-(int)player.getHeight()  + 5)); //+1 fuer inklusiv
-			score.incrementScore(score_factor);
-		}
-		*/
 	}
 	public void tower_loop_turbo() {
 		for(int i = 0;i<arr_obst.length;i++) {
@@ -357,24 +281,6 @@ public class GameScreen implements Screen {
 				}
 			}
 		}
-		/*
-		if(tower1.getX() < 0-tower1.getWidth()) {
-			tower1.setPos((int)(tower4.getX()+distance), (int)(Gdx.graphics.getHeight()/2-tower1.getBottomHeigth())-gap/2);
-			score.incrementScore(1);
-		}
-		if(tower2.getX() < 0-tower1.getWidth()) {
-			tower2.setPos((int)(tower1.getX()+distance), (int)(Gdx.graphics.getHeight()/2-tower2.getBottomHeigth())-gap/2);
-			score.incrementScore(1);
-		}
-		if(tower3.getX() < 0-tower1.getWidth()) {
-			tower3.setPos((int)(tower2.getX()+distance), (int)(Gdx.graphics.getHeight()/2-tower3.getBottomHeigth())-gap/2);
-			score.incrementScore(1);
-		}
-		if(tower4.getX() < 0-tower1.getWidth()) {
-			tower4.setPos((int)(tower3.getX()+distance), (int)(Gdx.graphics.getHeight()/2-tower4.getBottomHeigth())-gap/2); //+1 fuer inklusiv
-			score.incrementScore(1);
-		}
-		*/
 	}
 	public void item_loop() {
 		if(invincibleItem.getX() < (0-invincibleItem.getWidth()-5)) {
@@ -420,18 +326,6 @@ public class GameScreen implements Screen {
 			placeItems(arr_it[i]);
 		}
 	}
-	
-	/*
-	 	tower1 = new Obstacle(game.turm_gryffindor,tower_factor,game.dementor,dementor_factor,(int)(gap+player.getHeight()));
-		tower1.setPos(start_x, start_y);
-		tower2 = new Obstacle(game.turm_huffelpuff,tower_factor,game.dementor,dementor_factor,(int)(gap+player.getHeight()));
-		tower2.setPos((int)(tower1.getX()+distance), ThreadLocalRandom.current().nextInt(-600, -20-(int)player.getHeight() + 1));
-		tower3 = new Obstacle(game.turm_ravenclaw,tower_factor,game.dementor,dementor_factor,(int)(gap+player.getHeight()));
-		tower3.setPos((int)(tower2.getX()+distance), ThreadLocalRandom.current().nextInt(-600, -20-(int)player.getHeight() + 1));
-		tower4 = new Obstacle(game.turm_slytherin,tower_factor,game.dementor,dementor_factor,(int)(gap+player.getHeight()));
-		tower4.setPos((int)(tower3.getX()+distance), ThreadLocalRandom.current().nextInt(-600, -20-(int)player.getHeight() + 1));
-	 */
-	
 	private void drawObstacles() {
 		for(int i = 0;i<arr_obst.length;i++) {
 			arr_obst[i].draw(game.batch);
@@ -442,5 +336,4 @@ public class GameScreen implements Screen {
 			arr_it[i].draw(game.batch);
 		}
 	}
-	
 }

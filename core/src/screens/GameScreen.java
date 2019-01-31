@@ -31,16 +31,16 @@ public class GameScreen implements Screen {
 	private FlappyGame game;
 	private OrthographicCamera camera;
 	private static int tower_speed = -5;
-	private static int distance = 700;
-	private static int start_x = 1150, start_y=-250;
-	private static int gap = 80;
-	private static double tower_factor = 0.5;
-	private static double dementor_factor = 0.125;
-	private static double items_factor = 0.075;
-	private static double player_factor = 0.125;
-	private static int flap_factor = 4;
+	private static final int distance = 700;
+	private static final int start_x = 1150, start_y=-250;
+	private static final int gap = 80;
+	private static final double tower_factor = 0.5;
+	private static final double dementor_factor = 0.125;
+	private static final double items_factor = 0.075;
+	private static final double player_factor = 0.125;
+	private static final int flap_factor = 4;
 	private static float item_timer = 0;
-	private static float item_duration = 5;
+	private static final float item_duration = 5;
 	private int score_factor = 1;
 	
 	private BitmapFont yourBitmapFontName;
@@ -113,7 +113,7 @@ public class GameScreen implements Screen {
 			if(item_timer == 0) {
 				player.setY(720/2);//720/2-player.getHeight()/2
 				System.out.println(Gdx.graphics.getHeight());
-				for(int i = 1; i<arr_obst.length;i++) {
+				for(int i = 0; i<arr_obst.length;i++) {
 					arr_obst[i].setY((int)(720/2-arr_obst[i].getBottomHeigth())-gap/2);
 				}
 			}

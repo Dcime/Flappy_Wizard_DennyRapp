@@ -71,7 +71,7 @@ public class GameOverScreen implements Screen{
 		    		System.out.println("no new score");
 		    	}
 		    	game.setScreen(new GameScreen(game));
-				//dispose();
+				dispose();
 		    }
 		    @Override
 		    public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
@@ -106,7 +106,7 @@ public class GameOverScreen implements Screen{
 		    		System.out.println("no new score");
 		    	}
 		    	game.setScreen(new MainMenuScreen(game));
-				//dispose();
+				dispose();
 		    }
 		    @Override
 		    public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {

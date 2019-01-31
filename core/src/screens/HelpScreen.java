@@ -43,6 +43,7 @@ public class HelpScreen implements Screen{
 		    @Override
 		    public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
 		    	game.setScreen(new MainMenuScreen(game));
+		    	dispose();
 		    }
 		    @Override
 		    public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {

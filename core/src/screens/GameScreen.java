@@ -162,14 +162,14 @@ public class GameScreen implements Screen {
 		if(player.getStatus() == Item_Status.notActive) {
 			drawItems();
 		}
+		player.draw(game.batch);
 		yourBitmapFontName.draw(game.batch, "score: "+score.getScore(), 25, 100); 
 		yourBitmapFontName.draw(game.batch, "collision "+collisions, 25, 500);
 		yourBitmapFontName.draw(game.batch,"FPS: "+ (int)(1/delta), 25, 400);
 		yourBitmapFontName.draw(game.batch, "active Item: "+player.getStatus(), 25, 300);
-		yourBitmapFontName.draw(game.batch, "timer "+item_timer, 25, 200);
-		yourBitmapFontName.draw(game.batch, "speed "+tower_speed+" timer"+speed_timer, 25, 600);
+		yourBitmapFontName.draw(game.batch, "timer: "+item_timer, 25, 200);
+		yourBitmapFontName.draw(game.batch, "speed: "+tower_speed+" timer: "+speed_timer, 25, 600);
 		
-		player.draw(game.batch);
 		game.batch.end();
 		
 		if(item_timer> item_duration) {
@@ -213,7 +213,7 @@ public class GameScreen implements Screen {
 		// TODO Auto-generated method stub
 	} 
 	public void gameOver() {
-		//game.setScreen(new GameOverScreen(game,score));
+		game.setScreen(new GameOverScreen(game,score));
 		//dispose();
 	}
 	public void placeItemsCollision(Items it) {

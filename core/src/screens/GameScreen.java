@@ -38,7 +38,7 @@ public class GameScreen implements Screen {
 	private static double dementor_factor = 0.125;
 	private static double items_factor = 0.075;
 	private static double player_factor = 0.125;
-	private static int flap_factor = 50;
+	private static int flap_factor = 70;
 	private static float item_timer = 0;
 	private static float item_duration = 5;
 	private int score_factor = 1;
@@ -128,6 +128,7 @@ public class GameScreen implements Screen {
 			item_timer += delta;
 			break;
 		case troll:
+			setGapFactor(ThreadLocalRandom.current().nextDouble(0.25,1));
 			tower_loop();
 			translate_objects(1);
 			update_check_collision();
@@ -141,6 +142,7 @@ public class GameScreen implements Screen {
 			item_timer += delta;
 			break;
 		default:
+			setGap();
 			tower_loop();
 			item_loop();
 			translate_objects(1);
@@ -334,6 +336,16 @@ public class GameScreen implements Screen {
 	private void drawItems() {
 		for(int i = 0;i<arr_it.length;i++) {
 			arr_it[i].draw(game.batch);
+		}
+	}
+	private void setGapFactor(double gap_fact) {
+		for(int i = 0; i< arr_obst.length;i++) {
+			arr_obst[i].setGapFactor(gap_fact);
+		}
+	}
+	private void setGap() {
+		for(int i = 0; i< arr_obst.length;i++) {
+			arr_obst[i].setGap((int)(gap+player.getHeight()));
 		}
 	}
 }

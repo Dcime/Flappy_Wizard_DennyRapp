@@ -46,8 +46,6 @@ public class Obstacle {
 		sprite_bottom.setPosition(x, y);
 		//es wird nur das untere Sprite gesetzt, weswegen man die anderen Sprites auch relativ dazu setzen
 		setRelativePos();
-		//Die Kollisionsbox wird nachgezogen
-		updateCollisionBox();
 	}
 	//setzt die y position
 	public void setY(int y) {
@@ -58,6 +56,8 @@ public class Obstacle {
 	private void setRelativePos() {
 		sprite_top.setPosition(sprite_bottom.getX()-sprite_bottom.getWidth()/2, sprite_bottom.getY()+gap+sprite_bottom.getHeight());
 		sprite_top2.setPosition(sprite_bottom.getX()-sprite_bottom.getWidth()/2, sprite_top.getY()+sprite_top.getHeight());
+		//Die Kollisionsbox wird nachgezogen
+		updateCollisionBox();
 	}
 	//das Objekt wird an der X-Achse bewegt
 	public void translateX(int x) {
@@ -97,5 +97,13 @@ public class Obstacle {
 	//gibt die Hoehe des unteren Teils bis zur Luecke zurueck
 	public float getBottomHeigth() {
 		return sprite_bottom.getHeight();
+	}
+	public void setGapFactor(double gap_factor) {
+		this.gap *= gap_factor;
+		setRelativePos();
+	}
+	public void setGap(int gap) {
+		this.gap = gap;
+		setRelativePos();
 	}
 }

@@ -33,15 +33,15 @@ public class GameOverScreen implements Screen{
 	
 	//Magic ab hier
 	private FlappyGame game;
-	Scoreboard scoreboard;
+	private Scoreboard scoreboard;
 	private Stage stage;
-	BitmapFont pixelFont;
-	GlyphLayout pixelLayout;
-	OrthographicCamera camera;
-	float posx = 1280/2; 
-	float posy = 720;
-	final int spacing = 80;
-	String score_name = "None";
+	private BitmapFont pixelFont;
+	private GlyphLayout pixelLayout;
+	private OrthographicCamera camera;
+	private float posx = 1280/2; 
+	private float posy = 720;
+	private final int spacing = 80;
+	private String score_name = "None";
 	
 	public GameOverScreen(FlappyGame game1, Scoreboard scoreboard1) {
 		this.game = game1;

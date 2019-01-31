@@ -19,14 +19,14 @@ import com.dennyrapp.game.FlappyGame;
 
 public class MainMenuScreen implements Screen {
 
-	final FlappyGame game;
-	Stage stage;
-	OrthographicCamera camera;
-	final int spacing = 10;
-	BitmapFont pixelFont;
-	float posx = 1280/2; 
-	float posy = 720;
-	GlyphLayout pixelLayout;
+	private final FlappyGame game;
+	private Stage stage;
+	private OrthographicCamera camera;
+	private final int spacing = 10;
+	private BitmapFont pixelFont;
+	private float posx = 1280/2; 
+	private float posy = 720;
+	private GlyphLayout pixelLayout;
 	
 	public MainMenuScreen(FlappyGame game1) {
 		this.game = game1;

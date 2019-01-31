@@ -17,7 +17,7 @@ public class FlappyGame extends Game {
 	public Texture harry, luna, malfoy, cedrig;
 	public Texture item_blau, item_gruen, item_rot, item_silber;
 	public Texture dementor, turm_gryffindor, turm_huffelpuff, turm_ravenclaw, turm_slytherin,hilfe_texture;
-	
+	public Texture texture_arr_tower[];
 	public BitmapFont font;
 	
 	@Override
@@ -25,6 +25,8 @@ public class FlappyGame extends Game {
 		batch = new SpriteBatch();
 		font = new BitmapFont();
 		
+		texture_arr_tower = new Texture[4];
+
 		hermine = new Texture("png/hermine.png");
 		
 		harry = new Texture("png/harry.png");
@@ -36,12 +38,18 @@ public class FlappyGame extends Game {
 		item_gruen = new Texture("png/item_gruen.png");
 		item_rot = new Texture("png/item_rot.png");
 		item_silber = new Texture("png/item_silber.png");
+
 		
 		dementor = new Texture("png/dementor.png");
+		
 		turm_gryffindor = new Texture("png/turm_gryffindor.png");
+		texture_arr_tower[0] = turm_gryffindor;
 		turm_huffelpuff = new Texture("png/turm_huffelpuff.png");
+		texture_arr_tower[1] = turm_huffelpuff;
 		turm_ravenclaw = new Texture("png/turm_ravenclaw.png");
+		texture_arr_tower[2] = turm_ravenclaw;
 		turm_slytherin = new Texture("png/turm_slytherin.png");
+		texture_arr_tower[3] = turm_slytherin;
 		
 		hilfe_texture = new Texture("Hilfe.jpeg");
 		

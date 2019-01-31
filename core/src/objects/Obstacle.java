@@ -15,14 +15,14 @@ public class Obstacle {
 	 */
 	
 	// Die Kollisionsboxen der 3 Sprites
-	CollisionBox cb_bottom, cb_top, cb_top2;
+	private CollisionBox cb_bottom, cb_top, cb_top2;
 	// Die 3 Sprites
-	Sprite sprite_bottom, sprite_top,sprite_top2;
+	private Sprite sprite_bottom, sprite_top,sprite_top2;
 	//die groesse der luecke
 	//diese wird spaeter durch die hoehe des Spieler + gap berechnet
 	//man braucht die gap weil es sonst unmoeglich wird fuer einen 
 	//menschlichen Spieler durch die luecke zu kommen
-	int gap;
+	private int gap;
 	
 	//Konstruktor in dem die 3 Sprites festgelegt werden
 	//mit groessen Faktor und Kollisionsboxen

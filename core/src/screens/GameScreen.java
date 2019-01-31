@@ -15,13 +15,9 @@ import com.dennyrapp.game.FlappyGame;
 
 import helper.Item_Status;
 import helper.Scoreboard;
-import objects.DoubleScore;
-import objects.Invincible;
 import objects.Items;
 import objects.Obstacle;
 import objects.Player;
-import objects.Troll;
-import objects.Turbo;
 
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -32,72 +28,49 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 
 public class GameScreen implements Screen {
-	final FlappyGame game;
-	OrthographicCamera camera;
-	static int tower_speed = -5;
-	static int distance = 700;
-	static int start_x = 1150, start_y=-250;
-	static int gap = 80;
-	static double tower_factor = 0.5;
-	static double dementor_factor = 0.125;
-	static double items_factor = 0.075;
-	static double player_factor = 0.125;
-	static int flap_factor = 50;
-	static float item_timer = 0;
-	static float item_duration = 5;
+	private FlappyGame game;
+	private OrthographicCamera camera;
+	private static int tower_speed = -5;
+	private static int distance = 700;
+	private static int start_x = 1150, start_y=-250;
+	private static int gap = 80;
+	private static double tower_factor = 0.5;
+	private static double dementor_factor = 0.125;
+	private static double items_factor = 0.075;
+	private static double player_factor = 0.125;
+	private static int flap_factor = 50;
+	private static float item_timer = 0;
+	private static float item_duration = 5;
 	private int score_factor = 1;
-	BitmapFont yourBitmapFontName;
-	Obstacle tower1,tower2,tower3,tower4;
-	Troll trollItem;
-	DoubleScore doubleScoreItem;
-	Invincible invincibleItem;
-	Turbo turboItem;
-	Player player;
-	Scoreboard score;
-	Object[] arr;
-	Obstacle helper;
+	private BitmapFont yourBitmapFontName;
+	private Obstacle tower1,tower2,tower3,tower4;
+	private Items trollItem, doubleScoreItem, invincibleItem, turboItem;
+	private Player player;
+	private Scoreboard score;
+	private Obstacle last_hit;
 	private float speed_timer = 0;
 	private final float speed_acceleration_time = 5;
 	private Boolean collisions = false;
+	private Obstacle[] arr_obst;
+	private Items[] arr_it;
+	
+	
 	public GameScreen(FlappyGame game) {
 		this.game = game;
 		score = new Scoreboard();
 		yourBitmapFontName = new BitmapFont();
-		player = new Player(game.harry,player_factor,flap_factor);
-		tower1 = new Obstacle(game.turm_gryffindor,tower_factor,game.dementor,dementor_factor,(int)(gap+player.getHeight()));
-		tower1.setPos(start_x, start_y);
-		tower2 = new Obstacle(game.turm_huffelpuff,tower_factor,game.dementor,dementor_factor,(int)(gap+player.getHeight()));
-		tower2.setPos((int)(tower1.getX()+distance), ThreadLocalRandom.current().nextInt(-600, -20-(int)player.getHeight() + 1));
-		tower3 = new Obstacle(game.turm_ravenclaw,tower_factor,game.dementor,dementor_factor,(int)(gap+player.getHeight()));
-		tower3.setPos((int)(tower2.getX()+distance), ThreadLocalRandom.current().nextInt(-600, -20-(int)player.getHeight() + 1));
-		tower4 = new Obstacle(game.turm_slytherin,tower_factor,game.dementor,dementor_factor,(int)(gap+player.getHeight()));
-		tower4.setPos((int)(tower3.getX()+distance), ThreadLocalRandom.current().nextInt(-600, -20-(int)player.getHeight() + 1));
-		trollItem = new Troll(game.item_blau,items_factor);
-		doubleScoreItem = new DoubleScore(game.item_gruen,items_factor);
-		invincibleItem = new Invincible(game.item_rot,items_factor);
-		turboItem = new Turbo(game.item_silber,items_factor);
-		placeItems(trollItem);
-		placeItems(doubleScoreItem);
-		placeItems(invincibleItem);
-		placeItems(turboItem);
-		arr = new Object[9];//1 Spieler + 4 Tuerme + 4 Items
-		arr[0] = player;
-		arr[1] = tower1;
-		arr[2] = tower2;
-		arr[3] = tower3;
-		arr[4] = tower4;
-		arr[5] = trollItem;
-		arr[6] = doubleScoreItem;
-		arr[7] = invincibleItem;
-		arr[8] = turboItem;	
+		init();		
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 1280, 720);
-	}	
+	}
+	
+	
 	@Override
 	public void render(float delta) {
 		Gdx.gl.glClearColor(0, 0.5f, 0.5f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		collisions = false;
+		
 		if(player.getStatus() != Item_Status.turbo) {
 			if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {//check ob Taste gedrueckt
 				if(player.getY()<= 550) {//check ob max hoehe
@@ -108,18 +81,38 @@ public class GameScreen implements Screen {
 					player.fall(delta);//fallen
 			}	
 		}
+		
+		//-----------------------------------------------------------------------------------------------
+		if(Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_1)) {//check ob Taste gedrueckt
+			player.setStatus(Item_Status.turbo);
+		}
+		if(Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_2)) {//check ob Taste gedrueckt
+			player.setStatus(Item_Status.invincible);
+		}
+		if(Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_3)) {//check ob Taste gedrueckt
+			player.setStatus(Item_Status.doubleScore);
+		}
+		if(Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_4)) {//check ob Taste gedrueckt
+			player.setStatus(Item_Status.troll);
+		}
+		if(Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_5)) {//check ob Taste gedrueckt
+			player.setStatus(Item_Status.notActive);
+		}
+		//-----------------------------------------------------------------------------------------------
+		
+		
 		if(player.getStatus() == Item_Status.notActive) {
 			item_timer = 0;
 		}
+		
+		
 		switch(player.getStatus()) {
 		case turbo:
 			if(item_timer == 0) {
-				player.setY(Gdx.graphics.getHeight()/2);
-				for(int i = 1; i<arr.length;i++) {
-					if(arr[i] instanceof Obstacle) {
-						Obstacle obst = (Obstacle) arr[i];
-						obst.setY((int)(Gdx.graphics.getHeight()/2-obst.getBottomHeigth())-gap/2);
-					}
+				player.setY(720/2);//720/2-player.getHeight()/2
+				System.out.println(Gdx.graphics.getHeight());
+				for(int i = 1; i<arr_obst.length;i++) {
+					arr_obst[i].setY((int)(720/2-arr_obst[i].getBottomHeigth())-gap/2);
 				}
 			}
 			translate_objects(5);
@@ -164,21 +157,18 @@ public class GameScreen implements Screen {
 		}else {
 			yourBitmapFontName.setColor(Color.WHITE);
 		}
-		player.draw(game.batch);
-		tower1.draw(game.batch);
-		tower2.draw(game.batch);
-		tower3.draw(game.batch);
-		tower4.draw(game.batch);
-		trollItem.draw(game.batch);
-		doubleScoreItem.draw(game.batch);
-		invincibleItem.draw(game.batch);
-		turboItem.draw(game.batch);
+		drawObstacles();
+		if(player.getStatus() == Item_Status.notActive) {
+			drawItems();
+		}
 		yourBitmapFontName.draw(game.batch, "score: "+score.getScore(), 25, 100); 
 		yourBitmapFontName.draw(game.batch, "collision "+collisions, 25, 500);
 		yourBitmapFontName.draw(game.batch,"FPS: "+ (int)(1/delta), 25, 400);
 		yourBitmapFontName.draw(game.batch, "active Item: "+player.getStatus(), 25, 300);
 		yourBitmapFontName.draw(game.batch, "timer "+item_timer, 25, 200);
 		yourBitmapFontName.draw(game.batch, "speed "+tower_speed+" timer"+speed_timer, 25, 600);
+		
+		player.draw(game.batch);
 		game.batch.end();
 		
 		if(item_timer> item_duration) {
@@ -225,9 +215,11 @@ public class GameScreen implements Screen {
 		//game.setScreen(new GameOverScreen(game,score));
 		//dispose();
 	}
-	public void placeItemsCollision(Items i) {
-		if(tower1.checkCollision(i.getCb())||tower2.checkCollision(i.getCb())||tower3.checkCollision(i.getCb())||tower4.checkCollision(i.getCb())) {
-			placeItems(i);
+	public void placeItemsCollision(Items it) {
+		for(int i = 0; i< arr_obst.length;i++) {
+			if(arr_obst[i].checkCollision(it.getCb())) {
+				placeItems(it);
+			}
 		}
 	}
 	public void placeItems(Items i) {
@@ -235,6 +227,30 @@ public class GameScreen implements Screen {
 		placeItemsCollision(i);
 	}
 	public void update_check_collision() {
+		if(arr_obst.length != arr_it.length) {
+			Gdx.app.log("Err", "nicht gleich viele items und tuerme");
+		}
+		for(int i = 0;i<arr_obst.length;i++) {
+			if(arr_obst[i].checkCollision(player.getCb())) {
+				if(player.getStatus() == Item_Status.invincible && last_hit == null) {
+					last_hit = arr_obst[i];
+					player.setStatus(Item_Status.notActive);
+				}else if(arr_obst[i] != last_hit) {
+					System.out.println("COLLISION");
+					collisions = true;
+					last_hit = null; //wegen tests
+					gameOver();
+				}
+			}
+			if(arr_it[i].checkCollision(player.getCb())) {
+				player.setStatus(arr_it[i].getKind());
+			}
+		}
+		
+		
+		
+		
+		/*
 		for(int i = 1;i<arr.length;i++) {
 			if(arr[i] instanceof Obstacle) {
 				Obstacle obst = (Obstacle) arr[i];
@@ -269,9 +285,19 @@ public class GameScreen implements Screen {
 					}
 				}
 			}
+			
 		}
+		*/
 	}
-	public void translate_objects(int translate_facor) {
+	public void translate_objects(int translate_factor) {
+		if(arr_obst.length != arr_it.length) {
+			Gdx.app.log("Err", "nicht gleich viele items und tuerme");
+		}
+		for(int i = 0;i<arr_obst.length;i++) {
+			arr_obst[i].translateX(tower_speed* translate_factor);
+			arr_it[i].translateX(tower_speed*translate_factor);
+		}
+		/*
 		for(int i = 1; i<arr.length;i++) {
 			if(arr[i] instanceof Obstacle) {
 				Obstacle obst = (Obstacle) arr[i];
@@ -282,8 +308,23 @@ public class GameScreen implements Screen {
 				it.translateX(tower_speed * translate_facor);
 			}
 		}
+		*/
 	}
 	public void tower_loop() {
+		for(int i = 0;i<arr_obst.length;i++) {
+			if(i == 0) {
+				if(arr_obst[i].getX() < 0-arr_obst[i].getWidth()) {
+					arr_obst[i].setPos((int)(arr_obst[arr_obst.length-1].getX()+distance), ThreadLocalRandom.current().nextInt(-600, -20-(int)player.getHeight() + 5));
+					score.incrementScore(score_factor);
+				}
+			}else {
+				if(arr_obst[i].getX() < 0-arr_obst[i].getWidth()) {
+					arr_obst[i].setPos((int)(arr_obst[i-1].getX()+distance), ThreadLocalRandom.current().nextInt(-600, -20-(int)player.getHeight() + 5));
+					score.incrementScore(score_factor);
+				}
+			}
+		}
+		/*
 		if(tower1.getX() < 0-tower1.getWidth()) {
 			tower1.setPos((int)(tower4.getX()+distance), ThreadLocalRandom.current().nextInt(-600, -20-(int)player.getHeight() + 5));
 			score.incrementScore(score_factor);
@@ -300,8 +341,23 @@ public class GameScreen implements Screen {
 			tower4.setPos((int)(tower3.getX()+distance), ThreadLocalRandom.current().nextInt(-600, -20-(int)player.getHeight()  + 5)); //+1 fuer inklusiv
 			score.incrementScore(score_factor);
 		}
+		*/
 	}
 	public void tower_loop_turbo() {
+		for(int i = 0;i<arr_obst.length;i++) {
+			if(i == 0) {
+				if(arr_obst[i].getX() < 0-arr_obst[i].getWidth()) {
+					arr_obst[i].setPos((int)(arr_obst[arr_obst.length-1].getX()+distance), (int)(720/2-arr_obst[i].getBottomHeigth())-gap/2);
+					score.incrementScore(score_factor);
+				}
+			}else {
+				if(arr_obst[i].getX() < 0-arr_obst[i].getWidth()) {
+					arr_obst[i].setPos((int)(arr_obst[i-1].getX()+distance), (int)(720/2-arr_obst[i].getBottomHeigth())-gap/2);
+					score.incrementScore(score_factor);
+				}
+			}
+		}
+		/*
 		if(tower1.getX() < 0-tower1.getWidth()) {
 			tower1.setPos((int)(tower4.getX()+distance), (int)(Gdx.graphics.getHeight()/2-tower1.getBottomHeigth())-gap/2);
 			score.incrementScore(1);
@@ -318,6 +374,7 @@ public class GameScreen implements Screen {
 			tower4.setPos((int)(tower3.getX()+distance), (int)(Gdx.graphics.getHeight()/2-tower4.getBottomHeigth())-gap/2); //+1 fuer inklusiv
 			score.incrementScore(1);
 		}
+		*/
 	}
 	public void item_loop() {
 		if(invincibleItem.getX() < (0-invincibleItem.getWidth()-5)) {
@@ -333,4 +390,57 @@ public class GameScreen implements Screen {
 			placeItems(doubleScoreItem);
 		}
 	}
+	private void init() {
+		player = new Player(game.harry,player_factor,flap_factor);
+		init_obstacle();
+		init_items();
+	}
+	private void init_obstacle() {
+		arr_obst = new Obstacle[4];
+		for(int i = 0 ; i < arr_obst.length;i++) {
+			arr_obst[i] = new Obstacle(game.texture_arr_tower[i],tower_factor,game.dementor,dementor_factor,(int)(gap+player.getHeight()));
+			if(i == 0) {
+				arr_obst[i].setPos(start_x, start_y);
+			}else {
+				arr_obst[i].setPos((int)(arr_obst[i-1].getX()+distance), ThreadLocalRandom.current().nextInt(-600, -20-(int)player.getHeight() + 1));
+			}
+		}
+	}
+	private void init_items() {
+		arr_it = new Items[4];
+		trollItem = new Items(game.item_blau,items_factor,Item_Status.troll);
+		arr_it[0] = trollItem;
+		doubleScoreItem = new Items(game.item_gruen,items_factor,Item_Status.doubleScore);
+		arr_it[1] = doubleScoreItem;
+		invincibleItem = new Items(game.item_rot,items_factor,Item_Status.invincible);
+		arr_it[2] = invincibleItem;
+		turboItem = new Items(game.item_silber,items_factor,Item_Status.turbo);
+		arr_it[3] = turboItem;
+		for(int i = 0;i<arr_it.length;i++) {
+			placeItems(arr_it[i]);
+		}
+	}
+	
+	/*
+	 	tower1 = new Obstacle(game.turm_gryffindor,tower_factor,game.dementor,dementor_factor,(int)(gap+player.getHeight()));
+		tower1.setPos(start_x, start_y);
+		tower2 = new Obstacle(game.turm_huffelpuff,tower_factor,game.dementor,dementor_factor,(int)(gap+player.getHeight()));
+		tower2.setPos((int)(tower1.getX()+distance), ThreadLocalRandom.current().nextInt(-600, -20-(int)player.getHeight() + 1));
+		tower3 = new Obstacle(game.turm_ravenclaw,tower_factor,game.dementor,dementor_factor,(int)(gap+player.getHeight()));
+		tower3.setPos((int)(tower2.getX()+distance), ThreadLocalRandom.current().nextInt(-600, -20-(int)player.getHeight() + 1));
+		tower4 = new Obstacle(game.turm_slytherin,tower_factor,game.dementor,dementor_factor,(int)(gap+player.getHeight()));
+		tower4.setPos((int)(tower3.getX()+distance), ThreadLocalRandom.current().nextInt(-600, -20-(int)player.getHeight() + 1));
+	 */
+	
+	private void drawObstacles() {
+		for(int i = 0;i<arr_obst.length;i++) {
+			arr_obst[i].draw(game.batch);
+		}
+	}
+	private void drawItems() {
+		for(int i = 0;i<arr_it.length;i++) {
+			arr_it[i].draw(game.batch);
+		}
+	}
+	
 }

@@ -11,12 +11,12 @@ import helper.Item_Status;
  * Beschreibt die Spielfigur Logik
  */
 public class Player extends Actor{
-	CollisionBox cb;		//Kollisionsbox
-	Sprite player_Sprite;	//Aussehen
-	int flyingSpeed;		//wie schnell die Figur nach oben fliegt
-	double fallingSpeed = 1;	//wird spaeter durch gravitation und gewicht ersetzt
-	Item_Status status;		//Status des Spielers (ENUM)
-	final double g = 9.81;
+	private CollisionBox cb;		//Kollisionsbox
+	private Sprite player_Sprite;	//Aussehen
+	private int flyingSpeed;		//wie schnell die Figur nach oben fliegt
+	private double fallingSpeed = 1;	//wird spaeter durch gravitation und gewicht ersetzt
+	private Item_Status status;		//Status des Spielers (ENUM)
+	private final double g = 9.81;	//gravitationskonstante
 	//Konstruktor
 	public Player(Texture texture,double factor, int flyingSpeed) {
 		player_Sprite = new Sprite(texture); 

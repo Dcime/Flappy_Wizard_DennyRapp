@@ -23,9 +23,9 @@ import com.dennyrapp.game.FlappyGame;
 
 public class HelpScreen implements Screen{
 
-	FlappyGame game;
-	Stage stage;
-	OrthographicCamera camera;
+	private FlappyGame game;
+	private Stage stage;
+	private OrthographicCamera camera;
 	
 	public HelpScreen(FlappyGame game1) {
 		game = game1;

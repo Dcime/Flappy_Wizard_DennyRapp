@@ -5,18 +5,21 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
 import helper.CollisionBox;
+import helper.Item_Status;
 /*
  * Klasse die alle Item funktionen enthaelt
  */
 public class Items {
 	//jedes Item hat ein Sprite und eine Kollisions Box
-	Sprite item_sprite;
-	CollisionBox cb;
+	private Sprite item_sprite;
+	private CollisionBox cb;
+	private Item_Status is;
 	//noramler Konstruktor
-	public Items(Texture texture, double factor) {
+	public Items(Texture texture, double factor, Item_Status is) {
 		item_sprite= new Sprite(texture);
 		item_sprite.setSize((int)(texture.getWidth()*factor), (int)(texture.getHeight()*factor));
 		cb = new CollisionBox(item_sprite.getX(),item_sprite.getY(),(int)(item_sprite.getWidth()),(int)(item_sprite.getHeight()));
+		this.is = is;
 	}
 	//setzt die Position des Items
 	public void setPos(int x,int y) {
@@ -33,7 +36,7 @@ public class Items {
 		item_sprite.draw(batch);
 	}
 	//checkt ob eine Kollision stattgefunden hat
-	public boolean collision(CollisionBox cb) {
+	public boolean checkCollision(CollisionBox cb) {
 		return this.cb.checkCollision(cb);
 	}
 	//gibt die Breite zurueck
@@ -51,5 +54,8 @@ public class Items {
 	//gibt die Kollisionsbox zurueck
 	public CollisionBox getCb() {
 		return cb;
+	}
+	public Item_Status getKind() {
+		return is;
 	}
 }

@@ -8,8 +8,8 @@ import com.badlogic.gdx.Preferences;
  */
 public class Scoreboard {
 	//benoetigte Variablen
-	Preferences pref;
-	int score;
+	private Preferences pref;
+	private int score;
 	//Konstruktor
 	public Scoreboard() {
 		pref = Gdx.app.getPreferences("FlappyWizard");//wird bei Windows nun unter "/user/.pref/FlappyWizard.xml" gespeichert

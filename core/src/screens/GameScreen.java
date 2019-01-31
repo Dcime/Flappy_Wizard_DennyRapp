@@ -38,10 +38,11 @@ public class GameScreen implements Screen {
 	private static double dementor_factor = 0.125;
 	private static double items_factor = 0.075;
 	private static double player_factor = 0.125;
-	private static int flap_factor = 70;
+	private static int flap_factor = 4;
 	private static float item_timer = 0;
 	private static float item_duration = 5;
 	private int score_factor = 1;
+	
 	private BitmapFont yourBitmapFontName;
 	private Items trollItem, doubleScoreItem, invincibleItem, turboItem;
 	private Player player;
@@ -78,7 +79,9 @@ public class GameScreen implements Screen {
 			} 
 			if(player.getY() > 0){//check ob am Boden
 					player.fall(delta);//fallen
-			}	
+			}else {
+				gameOver();
+			}
 		}
 		
 		//-----------------------------------------------------------------------------------------------
@@ -300,6 +303,7 @@ public class GameScreen implements Screen {
 	}
 	private void init() {
 		player = new Player(game.harry,player_factor,flap_factor);
+		player.setY(720/2);
 		init_obstacle();
 		init_items();
 	}

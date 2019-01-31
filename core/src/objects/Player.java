@@ -17,6 +17,7 @@ public class Player extends Actor{
 	private double fallingSpeed = 1;	//wird spaeter durch gravitation und gewicht ersetzt
 	private Item_Status status;		//Status des Spielers (ENUM)
 	private final double g = 9.81;	//gravitationskonstante
+	private float vector = 0;
 	//Konstruktor
 	public Player(Texture texture,double factor, int flyingSpeed) {
 		player_Sprite = new Sprite(texture); 
@@ -32,6 +33,7 @@ public class Player extends Actor{
 	}
 	//Bewegung nach oben
 	public void fly() {
+		/*
 		if(player_Sprite.getY()+flyingSpeed > 550) {
 			player_Sprite.setY(550);
 		}else {
@@ -39,15 +41,36 @@ public class Player extends Actor{
 		}
 		cb.setY(player_Sprite.getY());
 		fallingSpeed = 1;
+		*/
+		if(vector < 0) {
+			vector = 0;
+		}
+		if(vector + flyingSpeed <10) {
+			vector += flyingSpeed;
+		}
+		//fallingSpeed = 1;
+		move();
 	}
 	//Fall nach unten
 	public void fall(float delta) {
 		//v = g*t
+		/*
 		if(fallingSpeed < 60) {
 			fallingSpeed += g* delta;
 		}
 		player_Sprite.translateY(-(int)fallingSpeed);
 		cb.translateY(-(int)fallingSpeed);
+		*/
+		/*
+		if(fallingSpeed < 60) {
+			fallingSpeed += g* delta;
+		}
+		vector -= fallingSpeed;
+		*/
+		if(vector > -10) {
+			vector -= (g*delta);
+		}
+		move();
 	}
 	//Kollisionscheck
 	public boolean checkCollision(CollisionBox cb) {
@@ -90,4 +113,16 @@ public class Player extends Actor{
 	public CollisionBox getCb() {
 		return cb;
 	}
+	private void move() {
+		if(player_Sprite.getY()+vector > 550) {
+			player_Sprite.setY(550);
+			cb.setY(550);
+			vector = 0;
+		}else {
+			player_Sprite.translateY((int)vector);
+			cb.translateY((int)vector);
+		}
+		System.out.println(vector);
+	}
+	
 }

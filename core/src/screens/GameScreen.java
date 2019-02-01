@@ -164,6 +164,7 @@ public class GameScreen implements Screen {
 			update_check_collision();
 			break;
 		}
+		System.out.println(tower_speed);
 		//updated das Layout
 		pixelLayout = new GlyphLayout(pixelFont,""+score.getScore());
 		//zeichnen
@@ -352,6 +353,7 @@ public class GameScreen implements Screen {
 	private void init() {
 		player = new Player(game.harry,player_factor,flap_factor);
 		player.setY(720/2);
+		tower_speed = -5;
 		init_obstacle();
 		init_items();
 		init_background();

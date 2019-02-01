@@ -5,10 +5,18 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import helper.Scoreboard;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Preferences;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.mockito.Mockito;
 
-public class JUnitTest {
+import com.badlogic.gdx.Application;
+import com.badlogic.gdx.ApplicationListener;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.backends.headless.HeadlessApplication;
+import com.badlogic.gdx.graphics.GL20;
+
+
+public class JUnitTest extends GameTest{
 	@Test
 	public void test() {
 		//fail("Not yet implemented");

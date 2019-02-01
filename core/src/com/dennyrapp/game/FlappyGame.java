@@ -17,6 +17,7 @@ public class FlappyGame extends Game {
 	public Texture harry, luna, malfoy, cedrig;
 	public Texture item_blau, item_gruen, item_rot, item_silber;
 	public Texture dementor, turm_gryffindor, turm_huffelpuff, turm_ravenclaw, turm_slytherin,hilfe_texture;
+	public Texture cloud;
 	public Texture texture_arr_tower[];
 	public BitmapFont font;
 	
@@ -39,7 +40,7 @@ public class FlappyGame extends Game {
 		item_rot = new Texture("png/item_rot.png");
 		item_silber = new Texture("png/item_silber.png");
 
-		
+		cloud = new Texture("png/cloud.png");
 		dementor = new Texture("png/dementor.png");
 		
 		turm_gryffindor = new Texture("png/turm_gryffindor.png");

@@ -13,8 +13,10 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
 import com.dennyrapp.game.FlappyGame;
 
+import helper.CollisionBox;
 import helper.Item_Status;
 import helper.Scoreboard;
+import objects.Cloud;
 import objects.Items;
 import objects.Obstacle;
 import objects.Player;
@@ -42,8 +44,8 @@ public class GameScreen implements Screen {
 	private static float item_timer = 0;
 	private static final float item_duration = 5;
 	private int score_factor = 1;
-	
-	private BitmapFont yourBitmapFontName;
+	private boolean debug = false;
+	private BitmapFont debugBitmapFont;
 	private Items trollItem, doubleScoreItem, invincibleItem, turboItem;
 	private Player player;
 	private Scoreboard score;
@@ -53,13 +55,13 @@ public class GameScreen implements Screen {
 	private Boolean collisions = false;
 	private Obstacle[] arr_obst;
 	private Items[] arr_it;
-	
+	private Cloud[] arr_cloud;
 	
 	public GameScreen(FlappyGame game) {
 		this.game = game;
 		score = new Scoreboard();
-		yourBitmapFontName = new BitmapFont();
-		init();		
+		debugBitmapFont = new BitmapFont();
+		init();	
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 1280, 720);
 	}
@@ -100,6 +102,9 @@ public class GameScreen implements Screen {
 		if(Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_5)) {//check ob Taste gedrueckt
 			player.setStatus(Item_Status.notActive);
 		}
+		if(Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_6)) {//check ob Taste gedrueckt
+			debug = !debug;
+		}
 		//-----------------------------------------------------------------------------------------------
 		
 		
@@ -112,6 +117,7 @@ public class GameScreen implements Screen {
 		case turbo:
 			if(item_timer == 0) {
 				player.setY(720/2);//720/2-player.getHeight()/2
+				player.setVector(0);
 				System.out.println(Gdx.graphics.getHeight());
 				for(int i = 0; i<arr_obst.length;i++) {
 					arr_obst[i].setY((int)(720/2-arr_obst[i].getBottomHeigth())-gap/2);
@@ -123,7 +129,7 @@ public class GameScreen implements Screen {
 			break;
 		case invincible:
 			if(item_timer == 0) {
-				player.setScale(0.5f,0.5f);
+				player.getSmall();
 			}
 			tower_loop();
 			translate_objects(1);
@@ -145,6 +151,7 @@ public class GameScreen implements Screen {
 			item_timer += delta;
 			break;
 		default:
+			player.getNormal();
 			setGap();
 			tower_loop();
 			item_loop();
@@ -153,23 +160,28 @@ public class GameScreen implements Screen {
 			break;
 		}
 		game.batch.begin();
+		
+		
+		
 		if(collisions) {
-			yourBitmapFontName.setColor(Color.RED);
+			debugBitmapFont.setColor(Color.RED);
 		}else {
-			yourBitmapFontName.setColor(Color.WHITE);
+			debugBitmapFont.setColor(Color.WHITE);
 		}
+		drawBackground();
 		drawObstacles();
 		if(player.getStatus() == Item_Status.notActive) {
 			drawItems();
 		}
 		player.draw(game.batch);
-		yourBitmapFontName.draw(game.batch, "score: "+score.getScore(), 25, 100); 
-		yourBitmapFontName.draw(game.batch, "collision "+collisions, 25, 500);
-		yourBitmapFontName.draw(game.batch,"FPS: "+ (int)(1/delta), 25, 400);
-		yourBitmapFontName.draw(game.batch, "active Item: "+player.getStatus(), 25, 300);
-		yourBitmapFontName.draw(game.batch, "timer: "+item_timer, 25, 200);
-		yourBitmapFontName.draw(game.batch, "speed: "+tower_speed+" timer: "+speed_timer, 25, 600);
-		
+		if(debug) {
+			debugBitmapFont.draw(game.batch, "score: "+score.getScore(), 25, 100); 
+			debugBitmapFont.draw(game.batch, "collision "+collisions, 25, 500);
+			debugBitmapFont.draw(game.batch,"FPS: "+ (int)(1/delta), 25, 400);
+			debugBitmapFont.draw(game.batch, "active Item: "+player.getStatus(), 25, 300);
+			debugBitmapFont.draw(game.batch, "timer: "+item_timer, 25, 200);
+			debugBitmapFont.draw(game.batch, "speed: "+tower_speed+" timer: "+speed_timer, 25, 600);
+		}
 		game.batch.end();
 		
 		if(item_timer> item_duration) {
@@ -217,14 +229,20 @@ public class GameScreen implements Screen {
 		//dispose();
 	}
 	public void placeItemsCollision(Items it) {
+		CollisionBox icb = it.getCb();
 		for(int i = 0; i< arr_obst.length;i++) {
-			if(arr_obst[i].checkCollision(it.getCb())) {
+			if(arr_it[i] != it) {
+				if(arr_it[i].checkCollision(icb)) {
+					placeItems(it);
+				}
+			}
+			if(arr_obst[i].checkCollision(icb)) {
 				placeItems(it);
 			}
 		}
 	}
 	public void placeItems(Items i) {
-		i.setPos(ThreadLocalRandom.current().nextInt(200, 1150), ThreadLocalRandom.current().nextInt((int)(i.getHeight()), (int)(550-trollItem.getHeight())));
+		i.setPos(ThreadLocalRandom.current().nextInt((int)(1280+i.getWidth()), 2560), ThreadLocalRandom.current().nextInt((int)(i.getHeight()), (int)(550-trollItem.getHeight())));
 		placeItemsCollision(i);
 	}
 	public void update_check_collision() {
@@ -306,6 +324,13 @@ public class GameScreen implements Screen {
 		player.setY(720/2);
 		init_obstacle();
 		init_items();
+		init_background();
+	}
+	private void init_background(){
+		arr_cloud = new Cloud[4];
+		for(int i = 0; i<arr_cloud.length;i++) {
+			arr_cloud[i] = new Cloud(game.cloud);
+		}
 	}
 	private void init_obstacle() {
 		arr_obst = new Obstacle[4];
@@ -350,6 +375,12 @@ public class GameScreen implements Screen {
 	private void setGap() {
 		for(int i = 0; i< arr_obst.length;i++) {
 			arr_obst[i].setGap((int)(gap+player.getHeight()));
+		}
+	}
+	private void drawBackground() {
+		for(int i = 0; i< arr_cloud.length;i++) {
+			arr_cloud[i].loop(tower_speed);
+			arr_cloud[i].draw(game.batch);
 		}
 	}
 }

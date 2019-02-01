@@ -146,7 +146,6 @@ public class GameOverScreen implements Screen{
 	public void dispose() {
 		// TODO Auto-generated method stub
 		stage.dispose();
-		game.dispose();
 	}
 
 
@@ -162,7 +161,6 @@ public class GameOverScreen implements Screen{
 		// TODO Auto-generated method stub
 		Gdx.gl.glClearColor(0, 0, 0.2f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
 		camera.update();
 		stage.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		game.batch.setProjectionMatrix(camera.combined);

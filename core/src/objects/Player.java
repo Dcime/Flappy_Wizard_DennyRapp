@@ -18,10 +18,13 @@ public class Player extends Actor{
 	private Item_Status status;		//Status des Spielers (ENUM)
 	private final double g = 9.81;	//gravitationskonstante
 	private float vector = 0;
+	private int normalW,normalH;
 	//Konstruktor
 	public Player(Texture texture,double factor, int flyingSpeed) {
 		player_Sprite = new Sprite(texture); 
-		player_Sprite.setSize((int)(texture.getWidth()*factor),(int)(texture.getHeight()*factor));
+		normalW = (int)(texture.getWidth()*factor);
+		normalH = (int)(texture.getHeight()*factor);
+		player_Sprite.setSize(normalW,normalH);
 		cb = new CollisionBox(player_Sprite.getX(),player_Sprite.getY(),(int)(player_Sprite.getWidth()),(int)(player_Sprite.getHeight()));
 		this.flyingSpeed = flyingSpeed;
 		status = status.notActive;
@@ -94,11 +97,11 @@ public class Player extends Actor{
 	}
 	//Gibt die Hoehe zurueck
 	public float getHeight(){
-		return player_Sprite.getHeight();
+		return normalH;
 	}
 	//Gibt die Breite zurueck
 	public float getWidth() {
-		return player_Sprite.getHeight();
+		return normalW;
 	}
 	//Gibt den Status zurueck
 	public Item_Status getStatus() {
@@ -123,6 +126,17 @@ public class Player extends Actor{
 			cb.translateY((int)vector);
 		}
 		System.out.println(vector);
+	}
+	public void setVector(float vec) {
+		vector = vec;
+	}
+	public void getSmall() {
+		player_Sprite.setSize(player_Sprite.getWidth()/2,player_Sprite.getHeight()/2);
+		cb = new CollisionBox(player_Sprite.getX(),player_Sprite.getY(),(int)(player_Sprite.getWidth()),(int)(player_Sprite.getHeight()));
+	}
+	public void getNormal() {
+		player_Sprite.setSize(normalW,normalH);
+		cb = new CollisionBox(player_Sprite.getX(),player_Sprite.getY(),(int)(player_Sprite.getWidth()),(int)(player_Sprite.getHeight()));
 	}
 	
 }

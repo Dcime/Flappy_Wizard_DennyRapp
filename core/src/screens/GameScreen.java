@@ -79,7 +79,7 @@ public class GameScreen implements Screen {
 		//Key Abfrage
 		if(player.getStatus() != Item_Status.turbo) {
 			if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {//check ob Taste gedrueckt
-				if(player.getY()<= 550) {//check ob max hoehe
+				if(player.getY()<= (710-player.getHeight())) {//check ob max hoehe
 					player.fly();//fliegen
 				}
 			} 
@@ -164,7 +164,6 @@ public class GameScreen implements Screen {
 			update_check_collision();
 			break;
 		}
-		System.out.println(tower_speed);
 		//updated das Layout
 		pixelLayout = new GlyphLayout(pixelFont,""+score.getScore());
 		//zeichnen
@@ -307,12 +306,12 @@ public class GameScreen implements Screen {
 		for(int i = 0;i<arr_obst.length;i++) {
 			if(i == 0) {
 				if(arr_obst[i].getX() < 0-arr_obst[i].getWidth()) {
-					arr_obst[i].setPos((int)(arr_obst[arr_obst.length-1].getX()+distance), ThreadLocalRandom.current().nextInt(-600, -20-((int)player.getHeight() + 5)));
+					arr_obst[i].setPos((int)(arr_obst[arr_obst.length-1].getX()+distance), ThreadLocalRandom.current().nextInt(-600, -20-((int)player.getHeight() + 20)));
 					score.incrementScore(score_factor);
 				}
 			}else {
 				if(arr_obst[i].getX() < 0-arr_obst[i].getWidth()) {
-					arr_obst[i].setPos((int)(arr_obst[i-1].getX()+distance), ThreadLocalRandom.current().nextInt(-600, -20-((int)player.getHeight() + 5)));
+					arr_obst[i].setPos((int)(arr_obst[i-1].getX()+distance), ThreadLocalRandom.current().nextInt(-600, -20-((int)player.getHeight() + 20)));
 					score.incrementScore(score_factor);
 				}
 			}
@@ -354,6 +353,8 @@ public class GameScreen implements Screen {
 		player = new Player(game.harry,player_factor,flap_factor);
 		player.setY(720/2);
 		tower_speed = -5;
+		item_timer = 0;
+		speed_timer = 0;
 		init_obstacle();
 		init_items();
 		init_background();

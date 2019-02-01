@@ -14,7 +14,6 @@ public class Player extends Actor{
 	private CollisionBox cb;		//Kollisionsbox
 	private Sprite player_Sprite;	//Aussehen
 	private int flyingSpeed;		//wie schnell die Figur nach oben fliegt
-	private double fallingSpeed = 1;//wird spaeter durch gravitation und gewicht ersetzt
 	private Item_Status status;		//Status des Spielers (ENUM)
 	private final double g = 9.81;	//gravitationskonstante
 	private float vector = 0;		//Y-Achse Geschwindigkeitsvektor ein Vektorobject ware overkill
@@ -71,7 +70,7 @@ public class Player extends Actor{
 	public void setStatus(Item_Status status) {
 		this.status = status;
 	}
-	//Gibt die Hoehe zurueck
+	//Gibt die Standard Hoehe zurueck
 	public float getHeight(){
 		return normalH;
 	}

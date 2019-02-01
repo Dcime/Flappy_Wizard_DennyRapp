@@ -23,7 +23,6 @@ public class HighscoreScreen implements Screen{
 	private final FlappyGame game;
 	private Stage stage;
 	private OrthographicCamera camera;
-	private final int spacing = 10;
 	private BitmapFont pixelFont;
 	private float posx = 1280/2; 
 	private float posy = 720;

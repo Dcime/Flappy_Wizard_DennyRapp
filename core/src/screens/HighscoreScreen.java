@@ -18,7 +18,7 @@ import com.dennyrapp.game.FlappyGame;
 import helper.Scoreboard;
 
 public class HighscoreScreen implements Screen{
-	
+	//variablen
 	private Scoreboard scoreboard;
 	private final FlappyGame game;
 	private Stage stage;
@@ -28,7 +28,7 @@ public class HighscoreScreen implements Screen{
 	private float posx = 1280/2; 
 	private float posy = 720;
 	private GlyphLayout pixelLayout;
-	
+	//------------------------------
 	public HighscoreScreen(FlappyGame game1) {
 		this.game = game1;
 		scoreboard = new Scoreboard();
@@ -41,11 +41,12 @@ public class HighscoreScreen implements Screen{
 	    pixelLayout = new GlyphLayout(pixelFont,scoreboard.getHighscore());
 	    posx -=pixelLayout.width/2;
 		posy -=(pixelLayout.height+10);
+		//zurueck Button
 		Skin mySkin = new Skin(Gdx.files.internal("skin/glassy-ui.json"));
-		Button button = new TextButton("Zurueck",mySkin,"small");
-		button.setSize(col_width*4,row_height);
-		button.setPosition(20,20);
-		button.addListener(new InputListener(){
+		Button goBack = new TextButton("Zurueck",mySkin,"small");
+		goBack.setSize(col_width*4,row_height);
+		goBack.setPosition(20,20);
+		goBack.addListener(new InputListener(){
 		    @Override
 		    public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
 		    	game.setScreen(new MainMenuScreen(game));
@@ -57,7 +58,7 @@ public class HighscoreScreen implements Screen{
 		        return true;
 		    }
 		});
-		stage.addActor(button);
+		stage.addActor(goBack);
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 1280, 720);	
 	}
@@ -76,10 +77,11 @@ public class HighscoreScreen implements Screen{
 		camera.update();
 		stage.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		game.batch.setProjectionMatrix(camera.combined);
+		//schreiben des Highscores
 		game.batch.begin();
 		pixelFont.draw(game.batch,pixelLayout,posx,posy);
 		game.batch.end();
-		
+		//stage
 		stage.act();
         stage.draw();
 	}

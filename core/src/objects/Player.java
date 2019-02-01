@@ -14,11 +14,11 @@ public class Player extends Actor{
 	private CollisionBox cb;		//Kollisionsbox
 	private Sprite player_Sprite;	//Aussehen
 	private int flyingSpeed;		//wie schnell die Figur nach oben fliegt
-	private double fallingSpeed = 1;	//wird spaeter durch gravitation und gewicht ersetzt
+	private double fallingSpeed = 1;//wird spaeter durch gravitation und gewicht ersetzt
 	private Item_Status status;		//Status des Spielers (ENUM)
 	private final double g = 9.81;	//gravitationskonstante
-	private float vector = 0;
-	private int normalW,normalH;
+	private float vector = 0;		//Y-Achse Geschwindigkeitsvektor ein Vektorobject ware overkill
+	private int normalW,normalH;	//normale Breite und Hoehe
 	//Konstruktor
 	public Player(Texture texture,double factor, int flyingSpeed) {
 		player_Sprite = new Sprite(texture); 
@@ -36,40 +36,16 @@ public class Player extends Actor{
 	}
 	//Bewegung nach oben
 	public void fly() {
-		/*
-		if(player_Sprite.getY()+flyingSpeed > 550) {
-			player_Sprite.setY(550);
-		}else {
-			player_Sprite.translateY(flyingSpeed);
-		}
-		cb.setY(player_Sprite.getY());
-		fallingSpeed = 1;
-		*/
 		if(vector < 0) {
 			vector = 0;
 		}
 		if(vector + flyingSpeed <10) {
 			vector += flyingSpeed;
 		}
-		//fallingSpeed = 1;
 		move();
 	}
 	//Fall nach unten
 	public void fall(float delta) {
-		//v = g*t
-		/*
-		if(fallingSpeed < 60) {
-			fallingSpeed += g* delta;
-		}
-		player_Sprite.translateY(-(int)fallingSpeed);
-		cb.translateY(-(int)fallingSpeed);
-		*/
-		/*
-		if(fallingSpeed < 60) {
-			fallingSpeed += g* delta;
-		}
-		vector -= fallingSpeed;
-		*/
 		if(vector > -10) {
 			vector -= (g*delta);
 		}
@@ -125,15 +101,18 @@ public class Player extends Actor{
 			player_Sprite.translateY((int)vector);
 			cb.translateY((int)vector);
 		}
-		System.out.println(vector);
+		//debug
+		//System.out.println(vector);
 	}
 	public void setVector(float vec) {
 		vector = vec;
 	}
+	//verkleinert den Spieler
 	public void getSmall() {
 		player_Sprite.setSize(player_Sprite.getWidth()/2,player_Sprite.getHeight()/2);
 		cb = new CollisionBox(player_Sprite.getX(),player_Sprite.getY(),(int)(player_Sprite.getWidth()),(int)(player_Sprite.getHeight()));
 	}
+	//macht den Spieler nach dem verkleinern wieder normal
 	public void getNormal() {
 		player_Sprite.setSize(normalW,normalH);
 		cb = new CollisionBox(player_Sprite.getX(),player_Sprite.getY(),(int)(player_Sprite.getWidth()),(int)(player_Sprite.getHeight()));

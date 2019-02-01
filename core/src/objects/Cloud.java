@@ -7,8 +7,10 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class Cloud {
+	//Variablen
 	private Sprite cloud_Sprite;
 	private int startX,startY;
+	//------------------------
 	public Cloud(Texture text) {
 		startX = ThreadLocalRandom.current().nextInt(0,1280);
 		startY = ThreadLocalRandom.current().nextInt(0,720);
@@ -16,9 +18,11 @@ public class Cloud {
 		cloud_Sprite.setSize((int)(text.getWidth()*0.5), (int)(text.getHeight()*0.5));
 		cloud_Sprite.setPosition(startX,startY);
 	}
+	//zeichnen der Wolke
 	public void draw(Batch batch) {
 		cloud_Sprite.draw(batch);
 	}
+	//Wolken loop
 	public void loop(int speed) {
 		if(cloud_Sprite.getX()< 0-cloud_Sprite.getWidth()) {
 			cloud_Sprite.setX(startX+1280);

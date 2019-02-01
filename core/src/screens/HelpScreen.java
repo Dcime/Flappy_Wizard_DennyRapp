@@ -1,5 +1,7 @@
 package screens;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -22,11 +24,12 @@ import com.dennyrapp.game.FlappyGame;
 
 
 public class HelpScreen implements Screen{
-
+	//variablen
 	private FlappyGame game;
 	private Stage stage;
 	private OrthographicCamera camera;
-	
+	private int fun = 0;
+	//---------------------------------------
 	public HelpScreen(FlappyGame game1) {
 		game = game1;
 		stage = new Stage(new ScreenViewport());
@@ -36,10 +39,10 @@ public class HelpScreen implements Screen{
 		Skin mySkin = new Skin(Gdx.files.internal("skin/glassy-ui.json"));
         int row_height = Gdx.graphics.getWidth() / 12;
         int col_width = Gdx.graphics.getWidth() / 12;
-		Button button = new TextButton("Zurueck",mySkin,"small");
-		button.setSize(col_width*4,row_height);
-		button.setPosition(20,20);
-		button.addListener(new InputListener(){
+		Button goBack = new TextButton("Zurueck",mySkin,"small");
+		goBack.setSize(col_width*4,row_height);
+		goBack.setPosition(20,20);
+		goBack.addListener(new InputListener(){
 		    @Override
 		    public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
 		    	game.setScreen(new MainMenuScreen(game));
@@ -51,8 +54,9 @@ public class HelpScreen implements Screen{
 		        return true;
 		    }
 		});
-		stage.addActor(button);
-		
+		stage.addActor(goBack);
+		//random funktion um spaeter zu entscheiden welcher hintergrund genutzt wird
+		fun = ThreadLocalRandom.current().nextInt(0,99);
 		
 	}
 	
@@ -66,7 +70,12 @@ public class HelpScreen implements Screen{
 		stage.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		game.batch.setProjectionMatrix(camera.combined);
 		game.batch.begin();
-		game.batch.draw(game.hilfe_texture, 0, 0);
+		if(fun >50) {
+			game.batch.draw(game.hilfe_texture, 0, 0);
+		}else {
+			game.batch.draw(game.hilfe2_texture, 0, 0);
+		}
+		
 		game.batch.end();
 		
 		stage.act();

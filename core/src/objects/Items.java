@@ -55,6 +55,7 @@ public class Items {
 	public CollisionBox getCb() {
 		return cb;
 	}
+	//gibt zurueck was fuer ein Item das Objekt ist
 	public Item_Status getKind() {
 		return is;
 	}

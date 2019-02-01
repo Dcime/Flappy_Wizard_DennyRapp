@@ -10,8 +10,8 @@ public class CollisionBox {
 	 * x,y beschreibt die Position des Rechtecks
 	 * width,height beschreiben die Breite und Hoehe des Rechtecks
 	 */
-	public float x,y;
-	public int width,height;
+	private float x,y;
+	private int width,height;
 	
 	//normaler Konstruktor
 	public CollisionBox(float x,float y,int width, int height) {
@@ -34,10 +34,11 @@ public class CollisionBox {
 	public void translateX(float x) {
 		this.x = this.x+x;
 	}
-	//verschieben auf der y-Achse
+	//verschieben auf der Y-Achse
 	public void translateY(float y) {
 		this.y = this.y+y;
 	}
+	//setzen der Y-Achse
 	public void setY(float y) {
 		this.y = y;
 	}

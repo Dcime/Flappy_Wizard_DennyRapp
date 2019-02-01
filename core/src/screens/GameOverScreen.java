@@ -31,7 +31,7 @@ import helper.Scoreboard;
  */
 public class GameOverScreen implements Screen{
 	
-	//Magic ab hier
+	//Variablen
 	private FlappyGame game;
 	private Scoreboard scoreboard;
 	private Stage stage;
@@ -41,7 +41,7 @@ public class GameOverScreen implements Screen{
 	private float posx = 1280/2; 
 	private float posy = 720;
 	private final int spacing = 80;
-	private String score_name = "None";
+	private String score_name = "No name";
 	
 	public GameOverScreen(FlappyGame game1, Scoreboard scoreboard1) {
 		this.game = game1;
@@ -55,66 +55,72 @@ public class GameOverScreen implements Screen{
 		posy -=(pixelLayout.height+10);
 	    camera = new OrthographicCamera();
 		camera.setToOrtho(false, 1280, 720);
-		
+		/*
+		 * Die Buttons oeffnen andere screens und spiechern beim betaetigen 
+		 * den wert im Namensfeld ab.
+		 */
 		Skin mySkin = new Skin(Gdx.files.internal("skin/glassy-ui.json"));
 		int row_height = Gdx.graphics.getWidth() / 12;
         int col_width = Gdx.graphics.getWidth() / 12;
-		Button button = new TextButton("Neustart",mySkin,"small");
-		button.setSize(col_width*4,row_height);
-		button.setPosition(col_width*7,Gdx.graphics.getHeight()-row_height*3);
-		button.addListener(new InputListener(){
+		Button restart = new TextButton("Neustart",mySkin,"small");
+		restart.setSize(col_width*4,row_height);
+		restart.setPosition(col_width*7,Gdx.graphics.getHeight()-row_height*3);
+		restart.addListener(new InputListener(){
 		    @Override
 		    public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
 		    	if(scoreboard.setHighscore(scoreboard.getScore(), score_name)) {
-		    		System.out.println("new score");
+		    		//ist nur zum Testen da
+		    		//System.out.println("new score");
 		    	}else {
-		    		System.out.println("no new score");
+		    		//ist nur zum Testen da
+		    		//System.out.println("no new score");
 		    	}
 		    	game.setScreen(new GameScreen(game));
 				dispose();
 		    }
 		    @Override
 		    public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-
 		        return true;
 		    }
 		});
-		stage.addActor(button);
-		TextField.TextFieldStyle textFieldStyle = mySkin.get(TextField.TextFieldStyle.class);
-		//textFieldStyle.font.scale(1.6f);
+		stage.addActor(restart);
+		
+		
+		TextField.TextFieldStyle textFieldStyle = mySkin.get(TextField.TextFieldStyle.class);//standard style
 		TextField name_textField = new TextField("Name",textFieldStyle);
 		name_textField.setSize(col_width*4,row_height);
 		name_textField.setPosition(col_width*7,Gdx.graphics.getHeight()-row_height*3-spacing-name_textField.getHeight()/2);
 		name_textField.setTextFieldListener(new TextFieldListener() {
-
+			//mit jedem Tastendruck im Textfeld wird der String neu gespeichert
             @Override
             public void keyTyped(TextField textField, char key) {
                     score_name= textField.getText();
             }
         });
-		//String st = name_textField.getText();
 		stage.addActor(name_textField);
-		Button button2 = new TextButton("Zum Menue",mySkin,"small");
-		button2.setSize(col_width*4,row_height);
-		button2.setPosition(col_width*7,name_textField.getY()-spacing-button2.getHeight()/2);
-		button2.addListener(new InputListener(){
+		
+		Button menu = new TextButton("Zum Menue",mySkin,"small");
+		menu.setSize(col_width*4,row_height);
+		menu.setPosition(col_width*7,name_textField.getY()-spacing-menu.getHeight()/2);
+		menu.addListener(new InputListener(){
 		    @Override
 		    public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
 		    	if(scoreboard.setHighscore(scoreboard.getScore(), score_name)) {
-		    		System.out.println("new score");
+		    		//ist nur zum Testen da
+		    		//System.out.println("new score");
 		    	}else {
-		    		System.out.println("no new score");
+		    		//ist nur zum Testen da
+		    		//System.out.println("no new score");
 		    	}
 		    	game.setScreen(new MainMenuScreen(game));
 				dispose();
 		    }
 		    @Override
 		    public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-
 		        return true;
 		    }
 		});
-		stage.addActor(button2);
+		stage.addActor(menu);
 	}
 	
 
@@ -158,34 +164,18 @@ public class GameOverScreen implements Screen{
 
 	@Override
 	public void render(float delta) {
-		// TODO Auto-generated method stub
 		Gdx.gl.glClearColor(0, 0, 0.2f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		camera.update();
 		stage.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		game.batch.setProjectionMatrix(camera.combined);
+		//zeichnen
 		game.batch.begin();
 		game.batch.draw(game.hermine, 0, 0, (int)(game.hermine.getWidth() * 0.25), (int)(game.hermine.getHeight() * 0.25));
 		pixelFont.draw(game.batch,pixelLayout,posx,posy);
 		game.batch.end();
-		
+		//stage 
 		stage.act();
         stage.draw();
 	}
-
 }
-/*
-private String txtVal;
-
-TextField textField= new TextField("textField Vallue", skin);
-
-        textField.setTextFieldListener(new TextFieldListener() {
-
-            @Override
-            public void keyTyped(TextField textField, char key) {
-                    txtVal= textField.getText();
-            }
-        });
-
- System.out.println(txtVal);
-*/

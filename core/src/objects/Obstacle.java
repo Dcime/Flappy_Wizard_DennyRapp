@@ -98,10 +98,12 @@ public class Obstacle {
 	public float getBottomHeigth() {
 		return sprite_bottom.getHeight();
 	}
+	//verkleinert/vergroessert die Luecke zwischen Turm und Dementor
 	public void setGapFactor(double gap_factor) {
 		this.gap *= gap_factor;
 		setRelativePos();
 	}
+	//setzt die Luecke zwischen Turm und Dementor
 	public void setGap(int gap) {
 		this.gap = gap;
 		setRelativePos();

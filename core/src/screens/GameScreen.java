@@ -7,13 +7,9 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.math.Rectangle;
 import com.dennyrapp.game.FlappyGame;
-
 import helper.CollisionBox;
 import helper.Item_Status;
 import helper.Scoreboard;
@@ -265,7 +261,8 @@ public class GameScreen implements Screen {
 	}
 	//plaziert die Items random
 	public void placeItems(Items i) {
-		i.setPos(ThreadLocalRandom.current().nextInt((int)(1280+i.getWidth()), 2560), ThreadLocalRandom.current().nextInt((int)(i.getHeight()), (int)(550-trollItem.getHeight())));
+		i.setPos(ThreadLocalRandom.current().nextInt((int)(1280+i.getWidth()), 2560),
+				ThreadLocalRandom.current().nextInt((int)(i.getHeight()), (int)(550-trollItem.getHeight())));
 		placeItemsCollision(i);
 	}
 	//checkt ob mit etwas kollidiert wird und handelt dementsprechend
@@ -378,10 +375,10 @@ public class GameScreen implements Screen {
 	}
 	private void init_items() {
 		arr_it = new Items[4];
-		trollItem = new Items(game.item_blau,items_factor,Item_Status.troll);
-		arr_it[0] = trollItem;
-		doubleScoreItem = new Items(game.item_gruen,items_factor,Item_Status.doubleScore);
-		arr_it[1] = doubleScoreItem;
+		doubleScoreItem = new Items(game.item_blau,items_factor,Item_Status.doubleScore);
+		arr_it[0] = doubleScoreItem;
+		trollItem = new Items(game.item_gruen,items_factor,Item_Status.troll);
+		arr_it[1] = trollItem;
 		invincibleItem = new Items(game.item_rot,items_factor,Item_Status.invincible);
 		arr_it[2] = invincibleItem;
 		turboItem = new Items(game.item_silber,items_factor,Item_Status.turbo);

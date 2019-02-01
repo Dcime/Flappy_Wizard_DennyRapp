@@ -182,9 +182,17 @@ public class GameScreen implements Screen {
 		//Zeichnet Items sofern gerade keins aktiv ist
 		if(player.getStatus() == Item_Status.notActive) {
 			drawItems();
+		}else {
+			replaceItems();
 		}
 		//zeichnet score
 		pixelFont.draw(game.batch,pixelLayout,640,700);
+		//zeichne item status
+		pixelLayout = new GlyphLayout(pixelFont,"active item: "+player.getStatus());
+		pixelFont.draw(game.batch,pixelLayout,10,50);
+		//fps
+		pixelLayout = new GlyphLayout(pixelFont,"FPS: "+(int)(1/delta));
+		pixelFont.draw(game.batch,pixelLayout,10,700);
 		//zeichnet den spieler
 		player.draw(game.batch);
 		//-------------debug zeug--------------------------------------------------
@@ -262,7 +270,7 @@ public class GameScreen implements Screen {
 	//plaziert die Items random
 	public void placeItems(Items i) {
 		i.setPos(ThreadLocalRandom.current().nextInt((int)(1280+i.getWidth()), 2560),
-				ThreadLocalRandom.current().nextInt((int)(i.getHeight()), (int)(550-trollItem.getHeight())));
+				ThreadLocalRandom.current().nextInt((int)(i.getHeight()), (int)(550-i.getHeight())));
 		placeItemsCollision(i);
 	}
 	//checkt ob mit etwas kollidiert wird und handelt dementsprechend
@@ -414,6 +422,11 @@ public class GameScreen implements Screen {
 		for(int i = 0; i< arr_cloud.length;i++) {
 			arr_cloud[i].loop(tower_speed);
 			arr_cloud[i].draw(game.batch);
+		}
+	}
+	private void replaceItems() {
+		for(int i = 0;i<arr_it.length;i++) {
+			placeItems(arr_it[i]);
 		}
 	}
 }

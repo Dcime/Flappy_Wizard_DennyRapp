@@ -116,5 +116,7 @@ public class Player extends Actor{
 		player_Sprite.setSize(normalW,normalH);
 		cb = new CollisionBox(player_Sprite.getX(),player_Sprite.getY(),(int)(player_Sprite.getWidth()),(int)(player_Sprite.getHeight()));
 	}
-	
+	public double testHelp(float delta) {
+		return  delta * g;
+	}
 }
